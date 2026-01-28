@@ -1,0 +1,111 @@
+---
+layout: default
+title: Uji Analisis Wajah KPOP
+description: Uji Analisis Wajah Perusahaan Hiburan KPOP menggunakan Kecerdasan Buatan
+lang: id
+---
+<div class="container content-wrapper">
+    {% include site-logo.html %}
+    <h1>Agensi K-POP Mana yang Cocok dengan Visualku? Tes Kecocokan Visual</h1>
+    <div class="language">
+        <span>language:</span>
+        <select name="lang" id="lang" onchange="fnChangeLang(this)">
+            <option value="ko" id="ko">한국어</option>
+            <option value="en" id="en">English</option>
+            <option value="de" id="de">Deutsch</option>
+            <option value="es" id="es">Español</option>
+            <option value="fr" id="fr">Français</option>
+            <option value="id" id="id" selected="selected">Indonesia</option>
+            <option value="ja" id="ja">日本語</option>
+            <option value="nl" id="nl">Nederlands</option>
+            <option value="pl" id="pl">Polski</option>
+            <option value="pt" id="pt">Português</option>
+            <option value="ru" id="ru">Русский</option>
+            <option value="tr" id="tr">Türkçe</option>
+            <option value="uk" id="uk">Українська</option>
+            <option value="vi" id="vi">Tiếng việt</option>
+            <option value="zh" id="zh">中文</option>
+        </select>
+    </div>
+    {% include display02.html %}
+    <div class="gender-select">
+        <span>1. Silakan pilih jenis kelamin Anda</span>
+        <div class="gender-select-switch">
+            <span>Perempuan</span>
+            <input type="checkbox" id="gender" onclick="fnGenderSelect(this)"/><label for="gender">Toggle</label>
+            <span>Laki-laki</span>
+        </div>
+    </div>
+    <div class="tips-contents">
+        <div class="tips-title">2. TIP</div>
+        <div>
+            <li>Harap unggah foto dengan tampilan wajah yang jelas untuk hasil yang akurat.</li>
+            <li>AI yang dilatih dengan big data artis perwakilan SM, JYP, dan YG akan menganalisis tipe wajah agensi Anda!</li>
+            <li>Silakan nikmati hasilnya hanya untuk bersenang-senang.</li>
+            <li style="color:red">Gambar yang diunggah tidak akan disimpan di mana pun.</li>
+        </div>
+    </div>
+    <div class="file-upload">
+        <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
+        <div class="image-upload-wrap">
+            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
+            <div class="drag-text">
+                <img class="baseline_upload" src="../static/img/ico-upload.png">
+                <h3>3. Seret atau tekan untuk mengunggah gambar.</h3>
+            </div>
+        </div>
+        <div class="file-upload-content">
+            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+            <div id="loading" class="animated bounce">
+                <!-- <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div> -->
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <p class="text-center">AI sedang menganalisis wajah agensi KPOP Anda.</p>
+            </div>
+            <p class="result-messege"></p>
+            <div id="label-container"></div>
+            <!-- Simpan Gambar Hasil Button -->
+            <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
+                <i class="fas fa-camera"></i>
+                <span class="save-image-text">Simpan Gambar Hasil</span>
+            </button>
+            <div class="image-title-wrap">
+                <button type="button" class="try-again-btn" onclick="removeUpload()">
+                    <span class="try-again-text">Coba Lagi</span>
+                </button>
+            </div>
+
+            {% include buy_me_a_coffee.html %}
+            {% include sns_promotion.html %}
+        </div>
+    </div>
+    
+    {% include vote_section_id.html %}
+    
+    {% include comment_section_id.html %}
+    
+    <div class="share-contents" style="display:none;">
+        <div class="sns-share">Bagikan</div>
+        <ul class="sns">
+            <li>
+            <a href="#n" onclick="fn_sendFB('facebook');return false;" class="facebook" target="_self" title="Facebook Bagikan"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('twitter');return false;" class="twitter" target="_self" title="Twitter Bagikan"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('band');return false;" class="band" target="_self" title="NaverBand Bagikan"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="kakaotalk" target="_self" title="Kakaotalk Bagikan"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('kakaostory');return false;" class="kakaostory" target="_self" title="Kakaostory Bagikan"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="Url Copy"></a>
+            </li>
+        </ul>
+    </div>
+</div>

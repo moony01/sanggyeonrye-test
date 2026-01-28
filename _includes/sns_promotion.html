@@ -1,0 +1,19 @@
+{% assign cta_text = "Follow the Developer" %}
+{% if page.lang == 'ko' %}{% assign cta_text = "개발자 SNS 구경가기" %}{% endif %}
+{% if page.lang == 'ja' %}{% assign cta_text = "開発者のSNSをチェック" %}{% endif %}
+{% if page.lang == 'zh' %}{% assign cta_text = "关注开发者 SNS" %}{% endif %}
+
+<div class="sns-promo-container">
+  <div class="sns-promo-title">{{ cta_text }}</div>
+  <div class="sns-promo-icons">
+    <a href="https://www.tiktok.com/@kpopfacetest" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-tiktok">
+      <i class="fa-brands fa-tiktok"></i>
+    </a>
+    <a href="https://www.instagram.com/kpopfacetest/" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-instagram">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+    <a href="https://x.com/mun01180" target="_blank" rel="noopener noreferrer" class="sns-icon sns-icon-x">
+      <i class="fa-brands fa-x-twitter"></i>
+    </a>
+  </div>
+</div>

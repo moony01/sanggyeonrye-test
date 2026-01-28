@@ -1,0 +1,53 @@
+{
+  "short_name": "KpopFaceTest",
+  "name": "케이팝 소속사 얼굴상 테스트",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "static/img/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "static/img/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots" : [
+    {
+      "src": "screenshot.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpg",
+      "platform": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "KpopFaceTest",
+      "url": "https://moony01.com/kpopface/"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.mhhan01.kpopface"
+    }
+  ],
+  "start_url": "https://moony01.com/kpopface/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#283618",
+  "background_color": "#ffffff",
+  "description": "인공지능을 이용한 케이팝 소속사 얼굴상 테스트",
+  "scope": "/",
+  "iarc_rating_id": "e58c174a-81d2-5c3c-32cc-34b8de4a52e9"
+
+}

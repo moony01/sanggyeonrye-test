@@ -1,0 +1,64 @@
+<div class="comment-section-wrapper">
+    <!-- Comment Form -->
+    <!-- Unified Card (Form + List) -->
+    <div class="comment-unified-card">
+        <!-- Card Header (Title + Share) -->
+        <div class="card-header">
+            <div class="card-title-group">
+                <h3 class="card-title">コメントを残す</h3>
+                <span class="card-count" id="comment-count">0</span>
+            </div>
+            
+            <div class="card-share">
+                <span class="share-label">共有する</span>
+                <ul class="sns-list">
+                    <li><a href="#n" onclick="fn_sendFB('facebook');return false;" class="sns-btn sns-facebook" title="Facebookで共有"><i class="fa-brands fa-facebook-f"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('twitter');return false;" class="sns-btn sns-twitter" title="Twitterで共有"><i class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('band');return false;" class="sns-btn sns-band" title="Bandで共有"><i class="fa-solid fa-b"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="sns-btn sns-kakaotalk" title="KakaoTalkで共有"><i class="fa-solid fa-comment"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('copyurl');return false;" class="sns-btn sns-copy" title="URLをコピー"><i class="fa-solid fa-link"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Input Form Area -->
+        <div class="comment-form-container">
+            <div class="input-row">
+                <select id="cmt-facetype" class="cmt-input cmt-select">
+                    <option value="unknown">分析結果を選択（任意）</option>
+                    <option value="SM">SM顔</option>
+                    <option value="JYP">JYP顔</option>
+                    <option value="YG">YG顔</option>
+                    <option value="etc">その他 / 不明</option>
+                </select>
+                <input type="text" id="cmt-nickname" class="cmt-input" placeholder="ニックネーム（必須）" maxlength="20">
+                <input type="password" id="cmt-password" class="cmt-input" placeholder="パスワード（修正・削除用）" maxlength="20">
+            </div>
+            <div class="textarea-wrapper">
+                <textarea id="cmt-content" class="cmt-textarea" placeholder="ここにコメントを残してください。（最大500文字）" maxlength="500"></textarea>
+                <div class="submit-wrap">
+                    <button type="button" class="cmt-btn" onclick="postComment()">登録</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Comment List -->
+        <div id="comment-list" class="comment-list">
+            <!-- Populated by JavaScript -->
+            <div class="empty-state">
+                <span class="empty-icon">💬</span>
+                <p>まだコメントがありません。<br><strong>分析結果</strong>を誰よりも早く共有しましょう！</p>
+            </div>
+        </div>
+
+        <!-- Pagination UI -->
+        <div id="pagination-container" class="pagination-container">
+            <button class="page-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="page-numbers" id="page-numbers">
+                <button class="page-btn active">1</button>
+            </div>
+            <button class="page-btn next" disabled><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>

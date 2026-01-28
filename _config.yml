@@ -1,0 +1,27 @@
+title: 상견례 얼굴상 테스트
+email: mun_1201@naver.com
+description: AI가 판정하는 상견례 얼굴상 테스트 - 프리패스상 vs 문전박대상
+disqus_shortname: moony01
+google_analytics: G-XXXXXXXXXX
+# avatar_url: /static/img/ico.jpg
+url: "https://moony01.github.io"
+baseurl: "/sanggyeonrye-test" # the subpath of your site, e.g. /blog
+twitter_username: mun01180
+github_username: moony01
+
+# Build settings
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+
+exclude:
+  - GEMINI.md
+  - SECURITY_AUDIT.md
+  - node_modules
+  - package.json
+  - package-lock.json
+  - prompts
+  - README.md
+  - .gitignore
+  - .github

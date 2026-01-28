@@ -1,0 +1,128 @@
+/* 모달창 */
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    width: 220px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f6f6f6;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.modal-header {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.modal-header h2 {
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.modal-header .close { 
+    font-size: 2em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #4a4a4a;
+    cursor: pointer;
+}
+
+.modal-body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.modal-body .pop-logo {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-body .pop-logo img {
+    width: 50%;
+}
+
+.modal-body p {
+    font-size: 1em;
+    margin: 4% 0;
+    text-align: center;
+}
+
+.modal-body .modal-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10%;
+}
+
+.modal-body .modal-btn button {
+    width: 50%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    margin: 0 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    /* 텍스트 수직정렬 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-body .modal-btn button i {
+    margin-right: 14px;
+    font-size: 1.5em;
+}
+
+.modal-body .modal-btn span {
+    top: 3%;
+    position: relative;
+}
+
+.modal-body .modal-btn button:nth-child(1) {
+    background-color: #fefaec;
+    color: #625772;
+}
+
+.modal-body .modal-btn button:nth-child(1):hover {
+    background-color: #625772;
+    color: #fefaec;
+}
+
+.modal-body .modal-btn button:nth-child(2) {
+    background-color: #fefaec;
+    color: #625772;
+    display: none;
+}
+
+.modal-body .modal-btn button:nth-child(2):hover {
+    background-color: #625772;
+    color: #fefaec;
+}

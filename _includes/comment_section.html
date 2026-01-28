@@ -1,0 +1,64 @@
+<div class="comment-section-wrapper">
+    <!-- Comment Form -->
+    <!-- Unified Card (Form + List) -->
+    <div class="comment-unified-card">
+        <!-- Card Header (Title + Share) -->
+        <div class="card-header">
+            <div class="card-title-group">
+                <h3 class="card-title">Leave a Comment</h3>
+                <span class="card-count" id="comment-count">0</span>
+            </div>
+            
+            <div class="card-share">
+                <span class="share-label">공유하기</span>
+                <ul class="sns-list">
+                    <li><a href="#n" onclick="fn_sendFB('facebook');return false;" class="sns-btn sns-facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('twitter');return false;" class="sns-btn sns-twitter" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('band');return false;" class="sns-btn sns-band" title="Band"><i class="fa-solid fa-b"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="sns-btn sns-kakaotalk" title="Kakaotalk"><i class="fa-solid fa-comment"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('copyurl');return false;" class="sns-btn sns-copy" title="Copy URL"><i class="fa-solid fa-link"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Input Form Area -->
+        <div class="comment-form-container">
+            <div class="input-row">
+                <select id="cmt-facetype" class="cmt-input cmt-select">
+                    <option value="unknown">Select Analysis Result (Optional)</option>
+                    <option value="SM">SM Style</option>
+                    <option value="JYP">JYP Style</option>
+                    <option value="YG">YG Style</option>
+                    <option value="etc">Other / Unknown</option>
+                </select>
+                <input type="text" id="cmt-nickname" class="cmt-input" placeholder="Nickname (Required)" maxlength="20">
+                <input type="password" id="cmt-password" class="cmt-input" placeholder="Password (for edit/delete)" maxlength="20">
+            </div>
+            <div class="textarea-wrapper">
+                <textarea id="cmt-content" class="cmt-textarea" placeholder="Leave your comment here. (Max 500 chars)" maxlength="500"></textarea>
+                <div class="submit-wrap">
+                    <button type="button" class="cmt-btn" onclick="postComment()">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Comment List -->
+        <div id="comment-list" class="comment-list">
+            <!-- Populated by JavaScript -->
+            <div class="empty-state">
+                <span class="empty-icon">💬</span>
+                <p>No comments yet.<br>Be the first to share your <strong>analysis result</strong>!</p>
+            </div>
+        </div>
+
+        <!-- Pagination UI -->
+        <div id="pagination-container" class="pagination-container">
+            <button class="page-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="page-numbers" id="page-numbers">
+                <button class="page-btn active">1</button>
+            </div>
+            <button class="page-btn next" disabled><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>

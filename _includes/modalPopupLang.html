@@ -1,0 +1,18 @@
+<!-- app 다운로드 modal 팝업 -->
+<div id="appDown" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>kpopface app released!</h2>
+            <span class="close" onclick="fnClose()">&times;</spa1n>
+        </div>
+        <div class="modal-body">
+            <div class="pop-logo"><img src="../static/img/icon.png" alt="kpopface logo"></div>
+            <p>Would you like to download the app?</p>
+            <div class="modal-btn">
+                <!-- <button class="modal-down"><i class="fab fa-apple"></i><span>App Store</span></button> -->
+                <button class="modal-down" onclick="fnAppDownloadPage('android')"><i class="fab fa-google-play"></i><span>Google Play</span></button>
+                <button class="modal-down" onclick="fnAppDownloadPage('a2hs')"><i class="fa-solid fa-mobile-button"></i><span>Add To App</span></button>
+            </div>
+        </div>
+    </div>
+</div>

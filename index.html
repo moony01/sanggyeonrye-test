@@ -1,0 +1,109 @@
+---
+layout: default
+lang: ko
+---
+
+<div class="container content-wrapper">
+    {% include site-logo.html %}
+    <h1>"나와 찰떡인 소속사는? K-POP 비주얼 매칭 테스트"</h1>
+    <div class="language">
+        <span>language:</span>
+        <select name="lang" id="lang" onchange="fnChangeLang(this)">
+            <option value="ko" id="ko" selected="selected">한국어</option>
+            <option value="en" id="en">English</option>
+            <option value="de" id="de">Deutsch</option>
+            <option value="es" id="es">Español</option>
+            <option value="fr" id="fr">Français</option>
+            <option value="id" id="id">Indonesia</option>
+            <option value="ja" id="ja">日本語</option>
+            <option value="nl" id="nl">Nederlands</option>
+            <option value="pl" id="pl">Polski</option>
+            <option value="pt" id="pt">Português</option>
+            <option value="ru" id="ru">Русский</option>
+            <option value="tr" id="tr">Türkçe</option>
+            <option value="uk" id="uk">Українська</option>
+            <option value="vi" id="vi">Tiếng việt</option>
+            <option value="zh" id="zh">中文</option>
+        </select>
+    </div>
+    {% include display02.html %}
+    <div class="gender-select">
+        <span>1. 성별 선택ㄱㄱ</span>
+        <div class="gender-select-switch">
+            <span>여자</span>
+            <input type="checkbox" id="gender" onclick="fnGenderSelect(this)"/><label for="gender">Toggle</label>
+            <span>남자</span>
+        </div>
+    </div>
+    <div class="tips-contents">
+        <div class="tips-title">2. 테스트전 꿀팁</div>
+        <div>
+            <li>최대한 얼굴이 잘나온 사진으로 업로드해야 정확한 결과나옴</li>
+            <li>SM, JYP, YG 대표 아티스트들의 빅데이터를 학습한 AI가 당신의 소속사 얼굴상을 분석해 드립니다!</li>
+            <li>결과는 재미로만...</li>
+            <li style="color:red">업로드한 이미지는 그 어디에도 저장되지 않습니다.</li>
+        </div>
+    </div>
+    <div class="file-upload">
+        <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
+        <div class="image-upload-wrap">
+            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
+            <div class="drag-text">
+                <img class="baseline_upload" src="static/img/ico-upload.png">
+                <h3>3. 이미지를 올려놓거나 눌러서 업로드 ㄱㄱ</h3>
+            </div>
+        </div>
+        <div class="file-upload-content">
+            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+            <div id="loading" class="animated bounce">
+                <!-- <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div> -->
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <p class="text-center">AI가 당신의 KPOP 소속사 얼굴상을 분석중입니다.</p>
+            </div>
+            <p class="result-messege"></p>
+            <div id="label-container"></div>
+            <!-- 결과 이미지 저장 버튼 -->
+            <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
+                <i class="fas fa-camera"></i>
+                <span class="save-image-text">결과 이미지 저장하기</span>
+            </button>
+            <div class="image-title-wrap">
+                <button type="button" class="try-again-btn" onclick="removeUpload()">
+                    <span class="try-again-text">다른 사진으로 재시도</span>
+                </button>
+            </div>
+            
+            {% include buy_me_a_coffee.html %}
+            {% include sns_promotion.html %}
+        </div>
+    </div>
+    {% include vote_section_ko.html %}
+    
+    {% include comment_section_ko.html %}
+
+    <!-- <div class="share-contents">
+        <div class="sns-share">공유하기</div>
+        <ul class="sns">
+            <li>
+            <a href="#n" onclick="fn_sendFB('facebook');return false;" class="facebook" target="_self" title="페이스북 새창열림"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('twitter');return false;" class="twitter" target="_self" title="트위터 새창열림"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('band');return false;" class="band" target="_self" title="네이버밴드 새창열림"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="kakaotalk" target="_self" title="카카오톡 새창열림"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('kakaostory');return false;" class="kakaostory" target="_self" title="카카오스토리 새창열림"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="mbtichat url 복사"></a>
+            </li>
+        </ul>
+    </div> -->
+</div>

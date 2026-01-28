@@ -1,0 +1,58 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Jua', sans-serif;
+    font-size: 18px;
+    color: #606c38;
+    background-color: #fefae0;
+}
+
+input[disabled] {
+    /* 스타일을 적용할 속성들을 여기에 추가합니다 */
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button[disabled] {
+    background-color: #ccc;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: #606c38;
+    text-decoration: none;
+    cursor: pointer
+}
+
+p, div, h1, h2, h3, figure {
+    margin: 0;
+    padding: 0;
+}
+
+ul{
+    list-style:none;
+    padding-left:0px;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+.d-flex {
+    display: -ms-flexbox!important;
+    display: flex!important;
+}
+.align-items-center {
+    -ms-flex-align: center!important;
+    align-items: center!important;
+}
+.justify-content-center {
+    -ms-flex-pack: center!important;
+    justify-content: center!important;
+}
+

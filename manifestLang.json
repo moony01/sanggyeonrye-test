@@ -1,0 +1,31 @@
+  {
+    "short_name": "KpopFaceTest",
+    "name": "kpop Face Analysis Test",
+    "icons": [
+      {
+        "src": "favicon.png",
+        "sizes": "64x64 32x32 24x24 16x16",
+        "type": "image/x-icon",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "static/img/icon.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "static/img/icon.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+      }
+    ],
+    "start_url": "https://moony01.com/kpopface/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#283618",
+    "background_color": "#ffffff",
+    "description": "KPOP Entertainment Company Face Analysis Test using Artificial Intelligence",
+    "scope": "/"
+  }

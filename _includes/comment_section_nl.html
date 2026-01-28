@@ -1,0 +1,64 @@
+<div class="comment-section-wrapper">
+    <!-- Comment Form -->
+    <!-- Unified Card (Form + List) -->
+    <div class="comment-unified-card">
+        <!-- Card Header (Title + Share) -->
+        <div class="card-header">
+            <div class="card-title-group">
+                <h3 class="card-title">Laat een reactie achter</h3>
+                <span class="card-count" id="comment-count">0</span>
+            </div>
+            
+            <div class="card-share">
+                <span class="share-label">Delen</span>
+                <ul class="sns-list">
+                    <li><a href="#n" onclick="fn_sendFB('facebook');return false;" class="sns-btn sns-facebook" title="Delen op Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('twitter');return false;" class="sns-btn sns-twitter" title="Delen op Twitter"><i class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('band');return false;" class="sns-btn sns-band" title="Delen op Band"><i class="fa-solid fa-b"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="sns-btn sns-kakaotalk" title="Delen op KakaoTalk"><i class="fa-solid fa-comment"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('copyurl');return false;" class="sns-btn sns-copy" title="URL kopiëren"><i class="fa-solid fa-link"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Input Form Area -->
+        <div class="comment-form-container">
+            <div class="input-row">
+                <select id="cmt-facetype" class="cmt-input cmt-select">
+                    <option value="unknown">Selecteer resultaat (Optioneel)</option>
+                    <option value="SM">SM-stijl</option>
+                    <option value="JYP">JYP-stijl</option>
+                    <option value="YG">YG-stijl</option>
+                    <option value="etc">Anders / Onbekend</option>
+                </select>
+                <input type="text" id="cmt-nickname" class="cmt-input" placeholder="Bijnaam (Verplicht)" maxlength="20">
+                <input type="password" id="cmt-password" class="cmt-input" placeholder="Wachtwoord (voor bewerken/verwijderen)" maxlength="20">
+            </div>
+            <div class="textarea-wrapper">
+                <textarea id="cmt-content" class="cmt-textarea" placeholder="Laat hier je reactie achter. (Max. 500 tekens)" maxlength="500"></textarea>
+                <div class="submit-wrap">
+                    <button type="button" class="cmt-btn" onclick="postComment()">Verzenden</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Comment List -->
+        <div id="comment-list" class="comment-list">
+            <!-- Populated by JavaScript -->
+            <div class="empty-state">
+                <span class="empty-icon">💬</span>
+                <p>Nog geen reacties.<br>Deel als eerste je <strong>resultaat</strong>!</p>
+            </div>
+        </div>
+
+        <!-- Pagination UI -->
+        <div id="pagination-container" class="pagination-container">
+            <button class="page-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="page-numbers" id="page-numbers">
+                <button class="page-btn active">1</button>
+            </div>
+            <button class="page-btn next" disabled><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>

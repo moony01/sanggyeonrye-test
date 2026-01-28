@@ -1,0 +1,111 @@
+---
+layout: default
+title: Test d'Analyse du Visage KPOP
+description: Test d'Analyse du Visage de la Compagnie de Divertissement KPOP utilisant l'Intelligence Artificielle
+lang: fr
+---
+<div class="container content-wrapper">
+    {% include site-logo.html %}
+    <h1>Quelle agence de K-POP correspond à mon visuel ? Test de correspondance visuelle</h1>
+    <div class="language">
+        <span>language:</span>
+        <select name="lang" id="lang" onchange="fnChangeLang(this)">
+            <option value="ko" id="ko">한국어</option>
+            <option value="en" id="en">English</option>
+            <option value="de" id="de">Deutsch</option>
+            <option value="es" id="es">Español</option>
+            <option value="fr" id="fr" selected="selected">Français</option>
+            <option value="id" id="id">Indonesia</option>
+            <option value="ja" id="ja">日本語</option>
+            <option value="nl" id="nl">Nederlands</option>
+            <option value="pl" id="pl">Polski</option>
+            <option value="pt" id="pt">Português</option>
+            <option value="ru" id="ru">Русский</option>
+            <option value="tr" id="tr">Türkçe</option>
+            <option value="uk" id="uk">Українська</option>
+            <option value="vi" id="vi">Tiếng việt</option>
+            <option value="zh" id="zh">中文</option>
+        </select>
+    </div>
+    {% include display02.html %}
+    <div class="gender-select">
+        <span>1. Veuillez sélectionner votre sexe</span>
+        <div class="gender-select-switch">
+            <span>Femme</span>
+            <input type="checkbox" id="gender" onclick="fnGenderSelect(this)"/><label for="gender">Toggle</label>
+            <span>Homme</span>
+        </div>
+    </div>
+    <div class="tips-contents">
+        <div class="tips-title">2. TIP</div>
+        <div>
+            <li>Veuillez télécharger une photo montrant clairement votre visage pour des résultats précis.</li>
+            <li>Une IA entraînée sur les big data d'artistes représentatifs de SM, JYP et YG analyse votre type de visage d'agence !</li>
+            <li>Veuillez profiter des résultats juste pour le plaisir.</li>
+            <li style="color:red">Les images téléchargées ne seront enregistrées nulle part.</li>
+        </div>
+    </div>
+    <div class="file-upload">
+        <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
+        <div class="image-upload-wrap">
+            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
+            <div class="drag-text">
+                <img class="baseline_upload" src="../static/img/ico-upload.png">
+                <h3>3. Glisser ou appuyer pour télécharger une image.</h3>
+            </div>
+        </div>
+        <div class="file-upload-content">
+            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+            <div id="loading" class="animated bounce">
+                <!-- <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div> -->
+                <i class="fas fa-circle-notch fa-spin"></i>
+                <p class="text-center">L'IA analyse le visage de votre agence KPOP.</p>
+            </div>
+            <p class="result-messege"></p>
+            <div id="label-container"></div>
+            <!-- Enregistrer l'image du résultat Button -->
+            <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
+                <i class="fas fa-camera"></i>
+                <span class="save-image-text">Enregistrer l'image du résultat</span>
+            </button>
+            <div class="image-title-wrap">
+                <button type="button" class="try-again-btn" onclick="removeUpload()">
+                    <span class="try-again-text">Réessayer</span>
+                </button>
+            </div>
+
+            {% include buy_me_a_coffee.html %}
+            {% include sns_promotion.html %}
+        </div>
+    </div>
+    
+    {% include vote_section_fr.html %}
+    
+    {% include comment_section_fr.html %}
+    
+    <div class="share-contents" style="display:none;">
+        <div class="sns-share">Partager</div>
+        <ul class="sns">
+            <li>
+            <a href="#n" onclick="fn_sendFB('facebook');return false;" class="facebook" target="_self" title="Facebook Partager"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('twitter');return false;" class="twitter" target="_self" title="Twitter Partager"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('band');return false;" class="band" target="_self" title="NaverBand Partager"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="kakaotalk" target="_self" title="Kakaotalk Partager"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('kakaostory');return false;" class="kakaostory" target="_self" title="Kakaostory Partager"></a>
+            </li>
+            <li>
+            <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="Url Copy"></a>
+            </li>
+        </ul>
+    </div>
+</div>

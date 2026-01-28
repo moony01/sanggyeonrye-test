@@ -1,0 +1,64 @@
+<div class="comment-section-wrapper">
+    <!-- Comment Form -->
+    <!-- Unified Card (Form + List) -->
+    <div class="comment-unified-card">
+        <!-- Card Header (Title + Share) -->
+        <div class="card-header">
+            <div class="card-title-group">
+                <h3 class="card-title">Залишити коментар</h3>
+                <span class="card-count" id="comment-count">0</span>
+            </div>
+            
+            <div class="card-share">
+                <span class="share-label">Поділитися</span>
+                <ul class="sns-list">
+                    <li><a href="#n" onclick="fn_sendFB('facebook');return false;" class="sns-btn sns-facebook" title="Поділитися у Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('twitter');return false;" class="sns-btn sns-twitter" title="Поділитися у Twitter"><i class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('band');return false;" class="sns-btn sns-band" title="Поділитися у Band"><i class="fa-solid fa-b"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="sns-btn sns-kakaotalk" title="Поділитися у KakaoTalk"><i class="fa-solid fa-comment"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('copyurl');return false;" class="sns-btn sns-copy" title="Копіювати URL"><i class="fa-solid fa-link"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Input Form Area -->
+        <div class="comment-form-container">
+            <div class="input-row">
+                <select id="cmt-facetype" class="cmt-input cmt-select">
+                    <option value="unknown">Виберіть результат (Необов'язково)</option>
+                    <option value="SM">Стиль SM</option>
+                    <option value="JYP">Стиль JYP</option>
+                    <option value="YG">Стиль YG</option>
+                    <option value="etc">Інше / Невідомо</option>
+                </select>
+                <input type="text" id="cmt-nickname" class="cmt-input" placeholder="Нікнейм (Обов'язково)" maxlength="20">
+                <input type="password" id="cmt-password" class="cmt-input" placeholder="Пароль (для редагування/видалення)" maxlength="20">
+            </div>
+            <div class="textarea-wrapper">
+                <textarea id="cmt-content" class="cmt-textarea" placeholder="Залиште свій коментар тут. (Макс. 500 символів)" maxlength="500"></textarea>
+                <div class="submit-wrap">
+                    <button type="button" class="cmt-btn" onclick="postComment()">Надіслати</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Comment List -->
+        <div id="comment-list" class="comment-list">
+            <!-- Populated by JavaScript -->
+            <div class="empty-state">
+                <span class="empty-icon">💬</span>
+                <p>Ще немає коментарів.<br>Будьте першим, хто поділиться своїм <strong>результатом</strong>!</p>
+            </div>
+        </div>
+
+        <!-- Pagination UI -->
+        <div id="pagination-container" class="pagination-container">
+            <button class="page-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="page-numbers" id="page-numbers">
+                <button class="page-btn active">1</button>
+            </div>
+            <button class="page-btn next" disabled><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>

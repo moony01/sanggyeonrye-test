@@ -1,0 +1,64 @@
+<div class="comment-section-wrapper">
+    <!-- Comment Form -->
+    <!-- Unified Card (Form + List) -->
+    <div class="comment-unified-card">
+        <!-- Card Header (Title + Share) -->
+        <div class="card-header">
+            <div class="card-title-group">
+                <h3 class="card-title">Yorum Yap</h3>
+                <span class="card-count" id="comment-count">0</span>
+            </div>
+            
+            <div class="card-share">
+                <span class="share-label">Paylaş</span>
+                <ul class="sns-list">
+                    <li><a href="#n" onclick="fn_sendFB('facebook');return false;" class="sns-btn sns-facebook" title="Facebook'ta Paylaş"><i class="fa-brands fa-facebook-f"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('twitter');return false;" class="sns-btn sns-twitter" title="Twitter'da Paylaş"><i class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('band');return false;" class="sns-btn sns-band" title="Band'da Paylaş"><i class="fa-solid fa-b"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="sns-btn sns-kakaotalk" title="KakaoTalk'ta Paylaş"><i class="fa-solid fa-comment"></i></a></li>
+                    <li><a href="#n" onclick="fn_sendFB('copyurl');return false;" class="sns-btn sns-copy" title="URL Kopyala"><i class="fa-solid fa-link"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Input Form Area -->
+        <div class="comment-form-container">
+            <div class="input-row">
+                <select id="cmt-facetype" class="cmt-input cmt-select">
+                    <option value="unknown">Sonuç Seç (İsteğe bağlı)</option>
+                    <option value="SM">SM Tarzı</option>
+                    <option value="JYP">JYP Tarzı</option>
+                    <option value="YG">YG Tarzı</option>
+                    <option value="etc">Diğer / Bilinmiyor</option>
+                </select>
+                <input type="text" id="cmt-nickname" class="cmt-input" placeholder="Takma Ad (Gerekli)" maxlength="20">
+                <input type="password" id="cmt-password" class="cmt-input" placeholder="Şifre (düzenleme/silme için)" maxlength="20">
+            </div>
+            <div class="textarea-wrapper">
+                <textarea id="cmt-content" class="cmt-textarea" placeholder="Yorumunuzu buraya bırakın. (Maks. 500 karakter)" maxlength="500"></textarea>
+                <div class="submit-wrap">
+                    <button type="button" class="cmt-btn" onclick="postComment()">Gönder</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Comment List -->
+        <div id="comment-list" class="comment-list">
+            <!-- Populated by JavaScript -->
+            <div class="empty-state">
+                <span class="empty-icon">💬</span>
+                <p>Henüz yorum yok.<br><strong>Sonucunu</strong> paylaşan ilk kişi sen ol!</p>
+            </div>
+        </div>
+
+        <!-- Pagination UI -->
+        <div id="pagination-container" class="pagination-container">
+            <button class="page-btn prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="page-numbers" id="page-numbers">
+                <button class="page-btn active">1</button>
+            </div>
+            <button class="page-btn next" disabled><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
