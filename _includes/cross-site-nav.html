@@ -336,17 +336,24 @@
   }
 
   .cross-site-toggle::before {
-    content: "";
+    content: "➜";
     position: absolute;
-    right: 52px;
+    right: 48px;
     top: 50%;
     transform: translateY(-50%);
-    border: 6px solid transparent;
-    border-left-color: rgba(0, 0, 0, 0.85);
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.85);
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
     pointer-events: none;
+    animation: pigTailWiggle 1s ease-in-out infinite;
+  }
+
+  @keyframes pigTailWiggle {
+    0%, 100% { transform: translateY(-50%) rotate(0deg); }
+    25% { transform: translateY(-50%) rotate(5deg); }
+    75% { transform: translateY(-50%) rotate(-5deg); }
   }
 
   .cross-site-toggle.show-tooltip::after,
@@ -380,8 +387,15 @@
     .cross-site-toggle::before {
       right: auto;
       left: 50%;
-      top: 48px;
+      top: 44px;
       transform: translateX(-50%) rotate(90deg);
+      animation: pigTailWiggleMobile 1s ease-in-out infinite;
+    }
+
+    @keyframes pigTailWiggleMobile {
+      0%, 100% { transform: translateX(-50%) rotate(90deg); }
+      25% { transform: translateX(-50%) rotate(95deg); }
+      75% { transform: translateX(-50%) rotate(85deg); }
     }
   }
 </style>
