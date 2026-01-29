@@ -121,10 +121,11 @@
 .language select {
   background: #fff;
   color: #121212;
-  padding: 8px 4px;
+  padding: 8px 8px 10px 8px;
   border: 2px solid #e5e9ea;
   border-radius: 0.25em;
   outline: none;
+  line-height: 1.4;
 }
 /* language: end */
 
