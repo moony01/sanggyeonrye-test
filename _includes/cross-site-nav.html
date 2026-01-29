@@ -308,12 +308,105 @@
     outline: 2px solid #8b5cf6;
     outline-offset: 2px;
   }
+
+  /* 툴팁 스타일 */
+  .cross-site-toggle {
+    position: relative;
+  }
+
+  .cross-site-toggle::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    right: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .cross-site-toggle::before {
+    content: "";
+    position: absolute;
+    right: 52px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-left-color: rgba(0, 0, 0, 0.85);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .cross-site-toggle.show-tooltip::after,
+  .cross-site-toggle.show-tooltip::before {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* 툴팁 애니메이션 */
+  @keyframes tooltipPulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.02); }
+  }
+
+  .cross-site-toggle.show-tooltip::after {
+    animation: tooltipPulse 2s ease-in-out infinite;
+  }
+
+  /* 모바일에서 툴팁 위치 조정 */
+  @media (max-width: 400px) {
+    .cross-site-toggle::after {
+      right: auto;
+      left: 50%;
+      top: 56px;
+      transform: translateX(-50%);
+      max-width: 200px;
+      white-space: normal;
+      text-align: center;
+    }
+
+    .cross-site-toggle::before {
+      right: auto;
+      left: 50%;
+      top: 48px;
+      transform: translateX(-50%) rotate(90deg);
+    }
+  }
 </style>
 
 <script>
   (function () {
-    var STORAGE_KEY = "crossSiteNavSeen";
-    var SCROLL_THRESHOLD = 50;
+    var AUTO_COLLAPSE_DELAY = 3000; // 3초 후 자동 접힘
+
+    // 다국어 툴팁 메시지
+    var TOOLTIP_MESSAGES = {
+      ko: "버튼을 클릭해서 다른 테스트를 체험해보세요",
+      en: "Click to explore other tests and apps",
+      ja: "クリックして他のテストを体験してください",
+      zh: "点击体验其他测试和应用",
+      vi: "Nhấp để khám phá các bài test khác",
+      id: "Klik untuk menjelajahi tes lainnya"
+    };
+
+    // 현재 언어 감지
+    function detectLanguage() {
+      var path = window.location.pathname;
+      var langMatch = path.match(/\/(en|ja|zh|vi|id)\//);
+      if (langMatch) return langMatch[1];
+      return "ko"; // 기본 한국어
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
       var nav = document.getElementById("crossSiteNav");
@@ -322,9 +415,12 @@
       if (!nav || !toggle) return;
 
       var isCollapsed = false;
-      var hasSeenMenu = localStorage.getItem(STORAGE_KEY) === "true";
-      var lastScrollY = window.scrollY;
-      var scrolledByUser = false;
+      var lang = detectLanguage();
+      var tooltipMessage = TOOLTIP_MESSAGES[lang] || TOOLTIP_MESSAGES["en"];
+
+      // 툴팁 설정
+      toggle.setAttribute("title", tooltipMessage);
+      toggle.setAttribute("data-tooltip", tooltipMessage);
 
       // 토글 함수 (bounce 애니메이션 포함)
       function toggleMenu(collapse) {
@@ -337,8 +433,10 @@
           setTimeout(function() {
             nav.classList.remove("collapsing");
             nav.classList.add("collapsed");
+            toggle.classList.add("show-tooltip");
           }, 400);
         } else {
+          toggle.classList.remove("show-tooltip");
           nav.classList.remove("collapsed");
           nav.classList.add("expanding");
           setTimeout(function() {
@@ -349,45 +447,25 @@
         isCollapsed = collapse;
       }
 
-      // 초기 상태 설정
-      if (hasSeenMenu) {
-        // 이미 본 사용자: 바로 접힌 상태
-        nav.classList.add("collapsed");
-        isCollapsed = true;
-      } else {
-        // 첫 방문자: 메뉴 펼쳐진 상태 + pulse 효과
-        if (primaryLink) {
-          setTimeout(function() {
-            primaryLink.classList.add("pulse-once");
-            primaryLink.addEventListener("animationend", function() {
-              primaryLink.classList.remove("pulse-once");
-            }, { once: true });
-          }, 500);
-        }
+      // 항상 첫 방문자 UX: 메뉴 펼침 + pulse 효과
+      if (primaryLink) {
+        setTimeout(function() {
+          primaryLink.classList.add("pulse-once");
+          primaryLink.addEventListener("animationend", function() {
+            primaryLink.classList.remove("pulse-once");
+          }, { once: true });
+        }, 500);
       }
+
+      // 3초 후 자동 접힘
+      setTimeout(function() {
+        toggleMenu(true);
+      }, AUTO_COLLAPSE_DELAY);
 
       // 토글 버튼 클릭
       toggle.addEventListener("click", function () {
         toggleMenu(!isCollapsed);
-        // 사용자가 직접 토글하면 본 것으로 기록
-        localStorage.setItem(STORAGE_KEY, "true");
       });
-
-      // 스크롤 감지 (아래로 스크롤하면 접기)
-      window.addEventListener("scroll", function () {
-        var currentScrollY = window.scrollY;
-
-        // 아래로 스크롤 + threshold 초과
-        if (currentScrollY > lastScrollY && currentScrollY > SCROLL_THRESHOLD) {
-          if (!isCollapsed) {
-            toggleMenu(true);
-            // 스크롤로 접히면 본 것으로 기록
-            localStorage.setItem(STORAGE_KEY, "true");
-          }
-        }
-
-        lastScrollY = currentScrollY;
-      }, { passive: true });
     });
   })();
 </script>
