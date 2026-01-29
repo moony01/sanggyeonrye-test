@@ -5,7 +5,7 @@
     {
       "src": "favicon.png",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
@@ -15,7 +15,7 @@
       "purpose": "any maskable"
     },
     {
-      "src": "static/img/icon.png",
+      "src": "static/img/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -35,12 +35,7 @@
       "url": "https://moony01.com/sanggyeonrye-test/"
     }
   ],
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.mhhan01.kpopface"
-    }
-  ],
+  "related_applications": [],
   "start_url": "/sanggyeonrye-test/",
   "display": "standalone",
   "orientation": "portrait",
