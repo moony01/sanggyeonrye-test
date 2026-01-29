@@ -137,7 +137,7 @@
     flex-direction: column;
     gap: 4px;
     align-items: flex-end;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .cross-site-header.collapsed .cross-site-links {
@@ -153,6 +153,40 @@
     opacity: 1;
     transform: translateY(0);
     max-height: 500px;
+  }
+
+  /* Bounce 효과를 위한 애니메이션 */
+  @keyframes bounceCollapse {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(-15px); opacity: 0.5; }
+    75% { transform: translateY(-5px); opacity: 0.2; }
+    100% { transform: translateY(-10px); opacity: 0; }
+  }
+
+  @keyframes bounceExpand {
+    0% { transform: translateY(-10px); opacity: 0; }
+    50% { transform: translateY(5px); opacity: 0.8; }
+    75% { transform: translateY(-2px); opacity: 0.9; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  .cross-site-header.collapsing .cross-site-links {
+    animation: bounceCollapse 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .cross-site-header.expanding .cross-site-links {
+    animation: bounceExpand 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  /* Primary 메뉴 Pulse 효과 */
+  @keyframes primaryPulse {
+    0% { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 0 0 0 0 rgba(124, 58, 237, 0.7); }
+    50% { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 0 0 0 12px rgba(124, 58, 237, 0); }
+    100% { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 0 0 0 0 rgba(124, 58, 237, 0); }
+  }
+
+  .cross-site-link.primary.pulse-once {
+    animation: primaryPulse 1.5s ease-out;
   }
 
   .cross-site-link {
@@ -278,13 +312,82 @@
 
 <script>
   (function () {
+    var STORAGE_KEY = "crossSiteNavSeen";
+    var SCROLL_THRESHOLD = 50;
+
     document.addEventListener("DOMContentLoaded", function () {
       var nav = document.getElementById("crossSiteNav");
       var toggle = document.getElementById("crossSiteToggle");
+      var primaryLink = nav ? nav.querySelector(".cross-site-link.primary") : null;
       if (!nav || !toggle) return;
+
+      var isCollapsed = false;
+      var hasSeenMenu = localStorage.getItem(STORAGE_KEY) === "true";
+      var lastScrollY = window.scrollY;
+      var scrolledByUser = false;
+
+      // 토글 함수 (bounce 애니메이션 포함)
+      function toggleMenu(collapse) {
+        if (collapse === isCollapsed) return;
+
+        nav.classList.remove("collapsing", "expanding");
+
+        if (collapse) {
+          nav.classList.add("collapsing");
+          setTimeout(function() {
+            nav.classList.remove("collapsing");
+            nav.classList.add("collapsed");
+          }, 400);
+        } else {
+          nav.classList.remove("collapsed");
+          nav.classList.add("expanding");
+          setTimeout(function() {
+            nav.classList.remove("expanding");
+          }, 400);
+        }
+
+        isCollapsed = collapse;
+      }
+
+      // 초기 상태 설정
+      if (hasSeenMenu) {
+        // 이미 본 사용자: 바로 접힌 상태
+        nav.classList.add("collapsed");
+        isCollapsed = true;
+      } else {
+        // 첫 방문자: 메뉴 펼쳐진 상태 + pulse 효과
+        if (primaryLink) {
+          setTimeout(function() {
+            primaryLink.classList.add("pulse-once");
+            primaryLink.addEventListener("animationend", function() {
+              primaryLink.classList.remove("pulse-once");
+            }, { once: true });
+          }, 500);
+        }
+      }
+
+      // 토글 버튼 클릭
       toggle.addEventListener("click", function () {
-        nav.classList.toggle("collapsed");
+        toggleMenu(!isCollapsed);
+        // 사용자가 직접 토글하면 본 것으로 기록
+        localStorage.setItem(STORAGE_KEY, "true");
       });
+
+      // 스크롤 감지 (아래로 스크롤하면 접기)
+      window.addEventListener("scroll", function () {
+        var currentScrollY = window.scrollY;
+
+        // 아래로 스크롤 + threshold 초과
+        if (currentScrollY > lastScrollY && currentScrollY > SCROLL_THRESHOLD) {
+          if (!isCollapsed) {
+            toggleMenu(true);
+            // 스크롤로 접히면 본 것으로 기록
+            localStorage.setItem(STORAGE_KEY, "true");
+          }
+        }
+
+        lastScrollY = currentScrollY;
+      }, { passive: true });
     });
   })();
 </script>
