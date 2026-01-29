@@ -17,6 +17,7 @@
     id="crossSiteToggle"
     aria-label="메뉴 토글"
   >
+    <span class="pig-tail-arrow"></span>
     <span class="link-icon toggle-open">☰</span>
     <span class="link-icon toggle-close">✕</span>
   </button>
@@ -335,25 +336,58 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
-  .cross-site-toggle::before {
-    content: "➜";
+  /* 돼지꼬리 화살표 - 곡선 + 화살표 머리 */
+  .pig-tail-arrow {
     position: absolute;
-    right: 48px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: rgba(0, 0, 0, 0.85);
+    right: calc(100% + 8px);
+    top: -25px;
+    width: 35px;
+    height: 45px;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
     pointer-events: none;
-    animation: pigTailWiggle 1s ease-in-out infinite;
   }
 
-  @keyframes pigTailWiggle {
-    0%, 100% { transform: translateY(-50%) rotate(0deg); }
-    25% { transform: translateY(-50%) rotate(5deg); }
-    75% { transform: translateY(-50%) rotate(-5deg); }
+  .pig-tail-arrow::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: 25px;
+    height: 35px;
+    border: 3px solid #dc2626;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 18px 0 0;
+  }
+
+  .pig-tail-arrow::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 12px solid #dc2626;
+  }
+
+  .cross-site-toggle.show-tooltip .pig-tail-arrow {
+    opacity: 1;
+    visibility: visible;
+    animation: pigTailBounce 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pigTailBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  /* 기존 ::before 제거 */
+  .cross-site-toggle::before {
+    display: none;
   }
 
   .cross-site-toggle.show-tooltip::after,
@@ -384,18 +418,9 @@
       text-align: center;
     }
 
-    .cross-site-toggle::before {
-      right: auto;
-      left: 50%;
-      top: 44px;
-      transform: translateX(-50%) rotate(90deg);
-      animation: pigTailWiggleMobile 1s ease-in-out infinite;
-    }
-
-    @keyframes pigTailWiggleMobile {
-      0%, 100% { transform: translateX(-50%) rotate(90deg); }
-      25% { transform: translateX(-50%) rotate(95deg); }
-      75% { transform: translateX(-50%) rotate(85deg); }
+    /* 모바일에서 돼지꼬리 숨김 - 공간 부족 */
+    .pig-tail-arrow {
+      display: none;
     }
   }
 </style>
