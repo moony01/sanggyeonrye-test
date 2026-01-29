@@ -278,7 +278,11 @@ document.addEventListener("DOMContentLoaded", function () {
   //   document.getElementsByTagName("html")[0].setAttribute("lang", "ko");
   // }
 
-  Kakao.init("8329cd81f78ef956d4487f90e5a4cd49");
+  // 카카오 SDK 초기화 (중복 방지)
+  if (typeof Kakao !== "undefined" && !Kakao.isInitialized()) {
+    Kakao.init("8329cd81f78ef956d4487f90e5a4cd49");
+    console.log("Kakao SDK initialized:", Kakao.isInitialized());
+  }
 
   // null 체크 추가 (요소가 없을 경우 에러 방지)
   if (headerIcon) {
@@ -363,124 +367,107 @@ function fn_sendFB(sns) {
   var snsDesc = "";
   var thumbUrl = "";
   langType = location.pathname.split("/")[2];
-  if (!langType == "" || !langType == null || !langType == "ko") {
+
+  // 기본 썸네일 URL (상견례 테스트)
+  var baseThumbUrl = "https://moony01.com/sanggyeonrye-test/static/img/share/";
+
+  if (langType && langType !== "" && langType !== "ko") {
     thisUrl = loc + langType;
-    thumbUrl = "https://moony01.com/kpopface/static/img/share/thumb-en.jpg";
+    thumbUrl = baseThumbUrl + "kakao-url-share.png";
+
     if (langType == "en") {
-      // 영어 번역
-      snsTitle = "KPOP Face Test";
-      snsDesc =
-        "What is my facial resemblance to K-POP entertainment agencies?";
-    } else if (langType == "de") {
-      // 독일어 번역
-      snsTitle = "KPOP Gesichtstest";
-      snsDesc =
-        "Wie ähnlich sieht mein Gesicht den K-POP Unterhaltungsagenturen aus?";
-    } else if (langType == "es") {
-      // 스페인어 번역
-      snsTitle = "Prueba de Rostro KPOP";
-      snsDesc =
-        "¿A qué agencia de entretenimiento de K-POP se parece mi rostro?";
-    } else if (langType == "fr") {
-      // 프랑스어 번역
-      snsTitle = "Test du Visage KPOP";
-      snsDesc =
-        "À quelle agence de divertissement K-POP ressemble mon visage ?";
-    } else if (langType == "id") {
-      // 인도네시아어 번역
-      snsTitle = "Tes Wajah KPOP";
-      snsDesc = "Wajah saya menyerupai agensi hiburan K-POP yang mana?";
+      snsTitle = "Meeting the In-Laws Face Test";
+      snsDesc = "AI determines your face type! Free Pass vs Rejected - Which one are you?";
     } else if (langType == "ja") {
-      // 일본어 번역
-      snsTitle = "KPOP顔診断テスト";
-      snsDesc =
-        "私の顔はK-POPエンターテインメント事務所にどれくらい似ているでしょうか？";
-    } else if (langType == "nl") {
-      // 네덜란드어 번역
-      snsTitle = "KPOP Gezichtstest";
-      snsDesc = "Hoe lijkt mijn gezicht op K-POP entertainmentbureaus?";
-    } else if (langType == "pl") {
-      // 폴란드어 번역
-      snsTitle = "Test twarzy KPOP";
-      snsDesc =
-        "Jakie są podobieństwa mojej twarzy do agencji rozrywkowych K-POP?";
-    } else if (langType == "pt") {
-      // 포르투갈어 번역
-      snsTitle = "Teste de Rosto KPOP";
-      snsDesc =
-        "Qual é a semelhança do meu rosto com as agências de entretenimento K-POP?";
-    } else if (langType == "ru") {
-      // 러시아어 번역
-      snsTitle = "Тест на лицо KPOP";
-      snsDesc = "Какое сходство моего лица с агентствами развлечений K-POP?";
-    } else if (langType == "tr") {
-      // 터키어 번역
-      snsTitle = "KPOP Yüz Testi";
-      snsDesc = "Yüzüm K-POP eğlence ajanslarına ne kadar benziyor?";
-    } else if (langType == "uk") {
-      // 우크라이나어 번역
-      snsTitle = "Тест на обличчя KPOP";
-      snsDesc = "До яких агентств розваг K-POP схоже моє обличчя?";
-    } else if (langType == "vi") {
-      // 베트남어 번역
-      snsTitle = "Kiểm Tra Khuôn Mặt KPOP";
-      snsDesc = "Gương mặt của tôi giống với công ty giải trí K-POP nào?";
+      snsTitle = "相見礼フリーパス顔テスト";
+      snsDesc = "AIが判定！フリーパス相 vs 門前払い相、あなたはどっち？";
     } else if (langType == "zh") {
-      // 중국어 번역
-      snsTitle = "KPOP脸部测试";
-      snsDesc = "我的脸与K-POP娱乐公司相似吗？";
+      snsTitle = "相亲对象面相测试";
+      snsDesc = "AI判定！通行证相 vs 拒之门外相，你是哪种？";
+    } else if (langType == "vi") {
+      snsTitle = "Bài test tướng mặt gặp mặt gia đình";
+      snsDesc = "AI đánh giá! Tướng Đỗ Ngay vs Tướng Bị Từ Chối - Bạn là loại nào?";
+    } else if (langType == "id") {
+      snsTitle = "Tes Wajah Pertemuan Keluarga";
+      snsDesc = "AI menentukan! Tipe Lolos vs Tipe Ditolak - Kamu yang mana?";
     } else {
-      // 영어 번역
-      snsTitle = "KPOP Face Test";
-      snsDesc =
-        "What is my facial resemblance to K-POP entertainment agencies?";
+      // 기타 언어는 영어로 기본 처리
+      snsTitle = "Meeting the In-Laws Face Test";
+      snsDesc = "AI determines your face type! Free Pass vs Rejected - Which one are you?";
     }
   } else {
     thisUrl = loc;
-    thumbUrl = "https://moony01.com/kpopface/static/img/share/thumb.jpg";
-    snsTitle = "케이팝 얼굴상 테스트";
-    snsDesc = "내 얼굴은 K-POP 엔터 소속사중 어떤 얼굴상일까?";
+    thumbUrl = baseThumbUrl + "kakao-url-share.png";
+    snsTitle = "상견례 얼굴상 테스트";
+    snsDesc = "AI가 판정! 프리패스상 vs 문전박대상, 나는 어떤 상일까?";
   }
 
   if (sns == "facebook") {
     var url =
-      "http://www.facebook.com/sharer/sharer.php?u=" +
+      "https://www.facebook.com/sharer/sharer.php?u=" +
       encodeURIComponent(thisUrl);
-    window.open(url, "", "width=486, height=286");
+    window.open(url, "shareFacebook", "width=600, height=400");
   } else if (sns == "twitter") {
+    // X (formerly Twitter)
     var url =
-      "http://twitter.com/share?url=" +
+      "https://x.com/intent/tweet?url=" +
       encodeURIComponent(thisUrl) +
       "&text=" +
       encodeURIComponent(snsTitle);
-    window.open(url, "tweetPop", "width=486, height=286,scrollbars=yes");
+    window.open(url, "shareX", "width=600, height=400,scrollbars=yes");
   } else if (sns == "band") {
     var url =
-      "http://www.band.us/plugin/share?body=" +
+      "https://www.band.us/plugin/share?body=" +
       encodeURIComponent(snsTitle) +
       "&route=" +
       encodeURIComponent(thisUrl);
-    window.open(url, "shareBand", "width=400, height=500, resizable=yes");
+    window.open(url, "shareBand", "width=500, height=600, resizable=yes");
   } else if (sns == "kakaotalk") {
-    // 카카오링크 버튼 생성
-    Kakao.Link.sendDefault({
-      objectType: "feed",
-      content: {
-        title: snsTitle, // 제목
-        description: snsDesc, // 설명
-        imageUrl: thumbUrl, // 썸네일 이미지
-        link: {
-          mobileWebUrl: thisUrl,
-          webUrl: thisUrl,
+    // 카카오톡 공유 (에러 처리 포함)
+    if (typeof Kakao === "undefined" || !Kakao.isInitialized()) {
+      alert("카카오 SDK가 로드되지 않았습니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+    try {
+      Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: {
+          title: snsTitle,
+          description: snsDesc,
+          imageUrl: thumbUrl,
+          link: {
+            mobileWebUrl: thisUrl,
+            webUrl: thisUrl,
+          },
         },
-      },
-    });
+        buttons: [
+          {
+            title: "테스트 하러가기",
+            link: {
+              mobileWebUrl: thisUrl,
+              webUrl: thisUrl,
+            },
+          },
+        ],
+      });
+    } catch (e) {
+      console.error("카카오 공유 실패:", e);
+      alert("카카오톡 공유에 실패했습니다. URL 복사를 이용해주세요.");
+    }
   } else if (sns == "kakaostory") {
-    // 사용할 앱의 JavaScript 키 설정
-    Kakao.Story.share({
-      url: thisUrl,
-      text: snsTitle,
-    });
+    // 카카오스토리 공유
+    if (typeof Kakao === "undefined" || !Kakao.isInitialized()) {
+      alert("카카오 SDK가 로드되지 않았습니다.");
+      return;
+    }
+    try {
+      Kakao.Story.share({
+        url: thisUrl,
+        text: snsTitle,
+      });
+    } catch (e) {
+      console.error("카카오스토리 공유 실패:", e);
+    }
   } else if (sns == "copyurl") {
     var tmp = document.createElement("input");
     var url = thisUrl;
