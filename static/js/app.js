@@ -25,6 +25,182 @@ var currentResultExplain = ""; // 해시태그 설명
 var currentResultCeleb = ""; // 닮은 연예인
 var currentPredictions = []; // T1.10: AI 예측 결과 배열 (퍼센트 바 차트용)
 
+// 다국어 결과 메시지 (6개 언어 지원)
+var RESULT_MESSAGES = {
+  freepass: {
+    male: {
+      ko: {
+        title: "프리패스상",
+        explain: "#첫인상100점 #호감형비주얼 #부모님_극찬예약 #사위상_찐",
+        celeb: "닮은 연예인: 박보검, 송중기, 임시완, 진(BTS), 차은우"
+      },
+      en: {
+        title: "Free Pass Type",
+        explain: "#FirstImpression100 #LikeableVisual #ParentsApproved #IdealSonInLaw",
+        celeb: "Similar celebrities: Park Bo-gum, Song Joong-ki, Im Si-wan, Jin(BTS), Cha Eun-woo"
+      },
+      ja: {
+        title: "フリーパス相",
+        explain: "#第一印象100点 #好感度ビジュアル #両親絶賛 #理想の婿タイプ",
+        celeb: "似ている芸能人: パク・ボゴム、ソン・ジュンギ、イム・シワン、ジン(BTS)、チャ・ウヌ"
+      },
+      zh: {
+        title: "通行证相",
+        explain: "#第一印象100分 #好感型颜值 #父母赞不绝口 #理想女婿相",
+        celeb: "相似艺人: 朴宝剑、宋仲基、任时完、Jin(BTS)、车银优"
+      },
+      vi: {
+        title: "Tướng Đỗ Ngay",
+        explain: "#ẤnTượngĐầu100Điểm #NgoạiHìnhDễMến #BốMẹKhenNgợi #RểLýTưởng",
+        celeb: "Nghệ sĩ tương tự: Park Bo-gum, Song Joong-ki, Im Si-wan, Jin(BTS), Cha Eun-woo"
+      },
+      id: {
+        title: "Tipe Lolos",
+        explain: "#KesanPertama100 #VisualDisukai #DisetujuiOrangtua #MenantudambaanIdeal",
+        celeb: "Selebriti serupa: Park Bo-gum, Song Joong-ki, Im Si-wan, Jin(BTS), Cha Eun-woo"
+      }
+    },
+    female: {
+      ko: {
+        title: "프리패스상",
+        explain: "#첫인상100점 #청순호감형 #부모님_극찬예약 #며느리상_찐",
+        celeb: "닮은 연예인: 김민주(아이즈원), 미나(트와이스), 박보영, 박은빈, 카즈하(르세라핌), 효정(오마이걸)"
+      },
+      en: {
+        title: "Free Pass Type",
+        explain: "#FirstImpression100 #PureAndLikeable #ParentsApproved #IdealDaughterInLaw",
+        celeb: "Similar celebrities: Kim Min-ju(IZ*ONE), Mina(TWICE), Park Bo-young, Park Eun-bin, Kazuha(LE SSERAFIM), Hyojung(OH MY GIRL)"
+      },
+      ja: {
+        title: "フリーパス相",
+        explain: "#第一印象100点 #清純好感型 #両親絶賛 #理想の嫁タイプ",
+        celeb: "似ている芸能人: キム・ミンジュ(IZ*ONE)、ミナ(TWICE)、パク・ボヨン、パク・ウンビン、カズハ(LE SSERAFIM)、ヒョジョン(OH MY GIRL)"
+      },
+      zh: {
+        title: "通行证相",
+        explain: "#第一印象100分 #清纯好感型 #父母赞不绝口 #理想儿媳相",
+        celeb: "相似艺人: 金玟周(IZ*ONE)、Mina(TWICE)、朴宝英、朴恩斌、Kazuha(LE SSERAFIM)、孝定(OH MY GIRL)"
+      },
+      vi: {
+        title: "Tướng Đỗ Ngay",
+        explain: "#ẤnTượngĐầu100Điểm #TrongSángDễThương #BốMẹKhenNgợi #DâuLýTưởng",
+        celeb: "Nghệ sĩ tương tự: Kim Min-ju(IZ*ONE), Mina(TWICE), Park Bo-young, Park Eun-bin, Kazuha(LE SSERAFIM), Hyojung(OH MY GIRL)"
+      },
+      id: {
+        title: "Tipe Lolos",
+        explain: "#KesanPertama100 #MurnidanDisukai #DisetujuiOrangtua #MenantuIdamaan",
+        celeb: "Selebriti serupa: Kim Min-ju(IZ*ONE), Mina(TWICE), Park Bo-young, Park Eun-bin, Kazuha(LE SSERAFIM), Hyojung(OH MY GIRL)"
+      }
+    }
+  },
+  reject: {
+    male: {
+      ko: {
+        title: "문전박대상",
+        explain: "#개성파미남 #강렬한첫인상 #알고보면_반전매력 #독보적비주얼",
+        celeb: "닮은 연예인: 덱스, 뷔(BTS), 산(에이티즈), 연준(투바투), 창균(몬스타엑스)"
+      },
+      en: {
+        title: "Rejected Type",
+        explain: "#UniqueHandsome #StrongFirstImpression #HiddenCharm #DistinctiveVisual",
+        celeb: "Similar celebrities: Dex, V(BTS), San(ATEEZ), Yeonjun(TXT), Changkyun(MONSTA X)"
+      },
+      ja: {
+        title: "門前払い相",
+        explain: "#個性派イケメン #強烈な第一印象 #知れば反転魅力 #唯一無二ビジュアル",
+        celeb: "似ている芸能人: デックス、V(BTS)、サン(ATEEZ)、ヨンジュン(TXT)、チャンギュン(MONSTA X)"
+      },
+      zh: {
+        title: "拒之门外相",
+        explain: "#个性帅哥 #强烈第一印象 #了解后反转魅力 #独特颜值",
+        celeb: "相似艺人: Dex、V(BTS)、San(ATEEZ)、然俊(TXT)、I.M(MONSTA X)"
+      },
+      vi: {
+        title: "Tướng Bị Từ Chối",
+        explain: "#ĐẹpTraiCáTính #ẤnTượngMạnh #MagLựcẨnGiấu #NgoạiHìnhĐộcĐáo",
+        celeb: "Nghệ sĩ tương tự: Dex, V(BTS), San(ATEEZ), Yeonjun(TXT), Changkyun(MONSTA X)"
+      },
+      id: {
+        title: "Tipe Ditolak",
+        explain: "#TampanUnik #KesanPertamaKuat #PesonaTeresembunyi #VisualKhas",
+        celeb: "Selebriti serupa: Dex, V(BTS), San(ATEEZ), Yeonjun(TXT), Changkyun(MONSTA X)"
+      }
+    },
+    female: {
+      ko: {
+        title: "문전박대상",
+        explain: "#도도미녀 #시크한매력 #첫인상은_좀_쎄보임 #알고보면_반전매력",
+        celeb: "닮은 연예인: 닝닝(에스파), 미미(오마이걸), 이채영(프로미스나인), 제니(블랙핑크), 채영(트와이스)"
+      },
+      en: {
+        title: "Rejected Type",
+        explain: "#ChicBeauty #CoolCharm #StrongFirstImpression #HiddenCharm",
+        celeb: "Similar celebrities: Ningning(aespa), Mimi(OH MY GIRL), Lee Chae-young(fromis_9), Jennie(BLACKPINK), Chaeyoung(TWICE)"
+      },
+      ja: {
+        title: "門前払い相",
+        explain: "#クール美女 #シックな魅力 #第一印象は強め #知れば反転魅力",
+        celeb: "似ている芸能人: ニンニン(aespa)、ミミ(OH MY GIRL)、イ・チェヨン(fromis_9)、ジェニー(BLACKPINK)、チェヨン(TWICE)"
+      },
+      zh: {
+        title: "拒之门外相",
+        explain: "#高冷美女 #时尚魅力 #第一印象较强 #了解后反转魅力",
+        celeb: "相似艺人: Ningning(aespa)、Mimi(OH MY GIRL)、李彩英(fromis_9)、Jennie(BLACKPINK)、彩瑛(TWICE)"
+      },
+      vi: {
+        title: "Tướng Bị Từ Chối",
+        explain: "#MỹNữKiêuSa #QuyếnRũLạnhLùng #ẤnTượngĐầuMạnh #MagLựcẨnGiấu",
+        celeb: "Nghệ sĩ tương tự: Ningning(aespa), Mimi(OH MY GIRL), Lee Chae-young(fromis_9), Jennie(BLACKPINK), Chaeyoung(TWICE)"
+      },
+      id: {
+        title: "Tipe Ditolak",
+        explain: "#KecantikanChic #PesonaDingin #KesanPertamaKuat #PesonaTeresembunyi",
+        celeb: "Selebriti serupa: Ningning(aespa), Mimi(OH MY GIRL), Lee Chae-young(fromis_9), Jennie(BLACKPINK), Chaeyoung(TWICE)"
+      }
+    }
+  },
+  labels: {
+    freepass: {
+      ko: "프리패스상", en: "Free Pass", ja: "フリーパス相", zh: "通行证相", vi: "Tướng Đỗ Ngay", id: "Tipe Lolos"
+    },
+    reject: {
+      ko: "문전박대상", en: "Rejected", ja: "門前払い相", zh: "拒之门外相", vi: "Tướng Bị Từ Chối", id: "Tipe Ditolak"
+    }
+  }
+};
+
+// 언어 코드 정규화 함수
+function getNormalizedLang() {
+  var lang = langType || "ko";
+  // 지원 언어 목록
+  var supportedLangs = ["ko", "en", "ja", "zh", "vi", "id"];
+  if (supportedLangs.indexOf(lang) === -1) {
+    return "en"; // 지원하지 않는 언어는 영어로 대체
+  }
+  return lang;
+}
+
+// 결과 메시지 가져오기
+function getResultMessages(resultType, isMale) {
+  var lang = getNormalizedLang();
+  var gender = isMale ? "male" : "female";
+  var messages = RESULT_MESSAGES[resultType][gender][lang];
+  if (!messages) {
+    messages = RESULT_MESSAGES[resultType][gender]["en"]; // fallback to English
+  }
+  return messages;
+}
+
+// 라벨 텍스트 가져오기
+function getLabelText(resultType) {
+  var lang = getNormalizedLang();
+  var label = RESULT_MESSAGES.labels[resultType][lang];
+  if (!label) {
+    label = RESULT_MESSAGES.labels[resultType]["en"]; // fallback to English
+  }
+  return label;
+}
+
 // T1.13: 다국어 Alert 메시지 (15개 언어 지원)
 var ALERT_MESSAGES = {
   urlCopied: {
@@ -464,65 +640,36 @@ async function predict() {
   console.log(prediction[0].className);
   var resultTitle, resultExplain, resultCeleb;
   langType = location.pathname.split("/")[2];
-  if (document.getElementById("gender").checked) {
-    // 상견례 테스트 - 남자용 결과 (한국어)
-    // 깔끔하고 단정한 호감형 vs 개성있고 강렬한 이미지
-    switch (prediction[0].className) {
-      case "freepass":
-      case "프리패스상":
-      case "상견례 프리패스상":
-        // 프리패스상 (남자): 깔끔하고 단정한 호감형
-        resultTitle = "프리패스상";
-        resultExplain = "#첫인상100점 #호감형비주얼 #부모님_극찬예약 #사위상_찐";
-        resultCeleb =
-          "닮은 연예인: 박보검, 송중기, 임시완, 진(BTS), 차은우";
-        break;
-      case "reject":
-      case "문전박대상":
-      case "상견례 문전박대상":
-        // 문전박대상 (남자): 개성있고 강렬한 이미지
-        resultTitle = "문전박대상";
-        resultExplain = "#개성파미남 #강렬한첫인상 #알고보면_반전매력 #독보적비주얼";
-        resultCeleb =
-          "닮은 연예인: 덱스, 뷔(BTS), 산(에이티즈), 연준(투바투), 창균(몬스타엑스)";
-        break;
-      default:
-        // 알 수 없는 클래스명인 경우 (디버깅용)
-        console.log("알 수 없는 클래스명:", prediction[0].className);
-        resultTitle = prediction[0].className;
-        resultExplain = "#테스트결과";
-        resultCeleb = "클래스명 확인 필요: " + prediction[0].className;
-    }
+  var isMale = document.getElementById("gender").checked;
+  var resultType = "";
+
+  // 결과 타입 결정
+  switch (prediction[0].className) {
+    case "freepass":
+    case "프리패스상":
+    case "상견례 프리패스상":
+      resultType = "freepass";
+      break;
+    case "reject":
+    case "문전박대상":
+    case "상견례 문전박대상":
+      resultType = "reject";
+      break;
+    default:
+      console.log("알 수 없는 클래스명:", prediction[0].className);
+      resultType = "";
+  }
+
+  // 다국어 결과 메시지 가져오기
+  if (resultType) {
+    var messages = getResultMessages(resultType, isMale);
+    resultTitle = messages.title;
+    resultExplain = messages.explain;
+    resultCeleb = messages.celeb;
   } else {
-    // 상견례 테스트 - 여자용 결과 (한국어)
-    // Teachable Machine 클래스명: "freepass" (프리패스상), "reject" (문전박대상)
-    // 클래스명이 다를 경우 console.log(prediction[0].className)으로 확인 후 수정 필요
-    switch (prediction[0].className) {
-      case "freepass":
-      case "프리패스상":
-      case "상견례 프리패스상":
-        // 프리패스상: 청순하고 단아한 이미지, 호감형 비주얼
-        resultTitle = "프리패스상";
-        resultExplain = "#첫인상100점 #청순호감형 #부모님_극찬예약 #며느리상_찐";
-        resultCeleb =
-          "닮은 연예인: 김민주(아이즈원), 미나(트와이스), 박보영, 박은빈, 카즈하(르세라핌), 효정(오마이걸)";
-        break;
-      case "reject":
-      case "문전박대상":
-      case "상견례 문전박대상":
-        // 문전박대상: 개성있고 시크한 이미지, 강렬한 첫인상
-        resultTitle = "문전박대상";
-        resultExplain = "#도도미녀 #시크한매력 #첫인상은_좀_쎄보임 #알고보면_반전매력";
-        resultCeleb =
-          "닮은 연예인: 닝닝(에스파), 미미(오마이걸), 이채영(프로미스나인), 제니(블랙핑크), 채영(트와이스)";
-        break;
-      default:
-        // 알 수 없는 클래스명인 경우 (디버깅용)
-        console.log("알 수 없는 클래스명:", prediction[0].className);
-        resultTitle = prediction[0].className;
-        resultExplain = "#테스트결과";
-        resultCeleb = "클래스명 확인 필요: " + prediction[0].className;
-    }
+    resultTitle = prediction[0].className;
+    resultExplain = "#테스트결과";
+    resultCeleb = "클래스명 확인 필요: " + prediction[0].className;
   }
   // 상견례 테스트 결과용 CSS 클래스 결정
   var resultClass = "";
@@ -610,17 +757,17 @@ async function predict() {
       barWidth = "2%";
     }
     var labelTitle;
-    // 상견례 테스트 라벨
+    // 상견례 테스트 라벨 (다국어 지원)
     switch (currentPrediction.className) {
       case "freepass":
       case "프리패스상":
       case "상견례 프리패스상":
-        labelTitle = "프리패스상";
+        labelTitle = getLabelText("freepass");
         break;
       case "reject":
       case "문전박대상":
       case "상견례 문전박대상":
-        labelTitle = "문전박대상";
+        labelTitle = getLabelText("reject");
         break;
       default:
         labelTitle = currentPrediction.className;
