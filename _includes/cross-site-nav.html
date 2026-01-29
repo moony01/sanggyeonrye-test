@@ -317,16 +317,19 @@
   .cross-site-toggle::after {
     content: attr(data-tooltip);
     position: absolute;
-    right: 56px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 0;
+    top: 56px;
+    transform: none;
     background: rgba(0, 0, 0, 0.85);
     color: white;
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 8px;
     font-size: 13px;
     font-weight: 500;
-    white-space: nowrap;
+    white-space: normal;
+    width: 120px;
+    text-align: center;
+    line-height: 1.4;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
@@ -342,25 +345,12 @@
 
   /* 툴팁 애니메이션 */
   @keyframes tooltipPulse {
-    0%, 100% { transform: translateY(-50%) scale(1); }
-    50% { transform: translateY(-50%) scale(1.02); }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
   }
 
   .cross-site-toggle.show-tooltip::after {
     animation: tooltipPulse 2s ease-in-out infinite;
-  }
-
-  /* 모바일에서 툴팁 위치 조정 */
-  @media (max-width: 400px) {
-    .cross-site-toggle::after {
-      right: auto;
-      left: 50%;
-      top: 56px;
-      transform: translateX(-50%);
-      max-width: 200px;
-      white-space: normal;
-      text-align: center;
-    }
   }
 </style>
 
