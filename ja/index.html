@@ -1,111 +1,155 @@
 ---
 layout: default
-title: KPOP顔分析テスト
-description: 人工知能を使用したKPOPエンターテインメント会社の顔分析テスト
+title: 相見礼（サンギョンレ）フリーパス顔テスト
+description: AIが分析するあなたの相見礼（両家顔合わせ）第一印象テスト
 lang: ja
 ---
+
 <div class="container content-wrapper">
-    {% include site-logo.html %}
-    <h1>私にぴったりの事務所は？K-POPビジュアルマッチングテスト</h1>
-    <div class="language">
-        <span>language:</span>
-        <select name="lang" id="lang" onchange="fnChangeLang(this)">
-            <option value="ko" id="ko">한국어</option>
-            <option value="en" id="en">English</option>
-            <option value="de" id="de">Deutsch</option>
-            <option value="es" id="es">Español</option>
-            <option value="fr" id="fr">Français</option>
-            <option value="id" id="id">Indonesia</option>
-            <option value="ja" id="ja" selected="selected">日本語</option>
-            <option value="nl" id="nl">Nederlands</option>
-            <option value="pl" id="pl">Polski</option>
-            <option value="pt" id="pt">Português</option>
-            <option value="ru" id="ru">Русский</option>
-            <option value="tr" id="tr">Türkçe</option>
-            <option value="uk" id="uk">Українська</option>
-            <option value="vi" id="vi">Tiếng việt</option>
-            <option value="zh" id="zh">中文</option>
-        </select>
+  {% include site-logo.html %}
+  <h1>相見礼（サンギョンレ）フリーパス顔テスト</h1>
+  <div class="language">
+    <span>language:</span>
+    <select name="lang" id="lang" onchange="fnChangeLang(this)">
+      <option value="ko" id="ko">한국어</option>
+      <option value="en" id="en">English</option>
+      <option value="id" id="id">Indonesia</option>
+      <option value="ja" id="ja" selected="selected">日本語</option>
+      <option value="vi" id="vi">Tiếng việt</option>
+      <option value="zh" id="zh">中文</option>
+    </select>
+  </div>
+  {% include display02.html %}
+  <div class="gender-select">
+    <span>1. 性別を選択してください</span>
+    <div class="gender-select-switch">
+      <span>女性</span>
+      <input type="checkbox" id="gender" onclick="fnGenderSelect(this)" /><label
+        for="gender"
+        >Toggle</label
+      >
+      <span>男性</span>
     </div>
-    {% include display02.html %}
-    <div class="gender-select">
-        <span>1. 性別を選択してください</span>
-        <div class="gender-select-switch">
-            <span>女性</span>
-            <input type="checkbox" id="gender" onclick="fnGenderSelect(this)"/><label for="gender">Toggle</label>
-            <span>男性</span>
-        </div>
+  </div>
+  <div class="tips-contents">
+    <div class="tips-title">2. TIP</div>
+    <div>
+      <li>
+        正確な結果を得るために、顔のはっきりした写真をアップロードしてください。
+      </li>
+      <li>
+        韓国の芸能人データ（フリーパス相 vs
+        門前払い相）を学習したAIが、あなたの第一印象を分析します！
+      </li>
+      <li>結果は楽しみのためだけにお楽しみください。</li>
+      <li style="color: red">アップロードした画像はどこにも保存されません。</li>
     </div>
-    <div class="tips-contents">
-        <div class="tips-title">2. TIP</div>
-        <div>
-            <li>正確な結果を得るために、顔のはっきりした写真をアップロードしてください。</li>
-            <li>SM、JYP、YGの代表アーティストのビッグデータを学習したAIが、あなたの事務所顔タイプを分析します！</li>
-            <li>結果は楽しみのためだけにお楽しみください。</li>
-            <li style="color:red">アップロードした画像はどこにも保存されません。</li>
-        </div>
+  </div>
+  <div class="file-upload">
+    <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
+    <div class="image-upload-wrap">
+      <input
+        class="file-upload-input"
+        type="file"
+        onchange="readURL(this);"
+        onclick="$('.file-upload-input').trigger( 'click' )"
+        accept="image/*"
+      />
+      <div class="drag-text">
+        <img class="baseline_upload" src="../static/img/ico-upload.png" />
+        <h3>3. 画像をドラッグまたは押してアップロードしてください。</h3>
+      </div>
     </div>
-    <div class="file-upload">
-        <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
-        <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
-            <div class="drag-text">
-                <img class="baseline_upload" src="../static/img/ico-upload.png">
-                <h3>3. 画像をドラッグまたは押してアップロードしてください。</h3>
-            </div>
-        </div>
-        <div class="file-upload-content">
-            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-            <div id="loading" class="animated bounce">
-                <!-- <div class="spinner-border" role="status">
+    <div class="file-upload-content">
+      <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+      <div id="loading" class="animated bounce">
+        <!-- <div class="spinner-border" role="status">
                     <span class="sr-only">Loading...</span>
                 </div> -->
-                <i class="fas fa-circle-notch fa-spin"></i>
-                <p class="text-center">AIがあなたのKPOPエージェンシーの顔を分析しています。</p>
-            </div>
-            <p class="result-messege"></p>
-            <div id="label-container"></div>
-            <!-- 結果画像を保存 Button -->
-            <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
-                <i class="fas fa-camera"></i>
-                <span class="save-image-text">結果画像を保存</span>
-            </button>
-            <div class="image-title-wrap">
-                <button type="button" class="try-again-btn" onclick="removeUpload()">
-                    <span class="try-again-text">再試行</span>
-                </button>
-            </div>
+        <i class="fas fa-circle-notch fa-spin"></i>
+        <p class="text-center">AIがあなたの第一印象を分析しています。</p>
+      </div>
+      <p class="result-messege"></p>
+      <div id="label-container"></div>
+      <!-- 結果画像を保存 Button -->
+      <button
+        type="button"
+        id="save-image-btn"
+        class="save-image-btn"
+        onclick="fnSaveResultImage()"
+      >
+        <i class="fas fa-camera"></i>
+        <span class="save-image-text">結果画像を保存</span>
+      </button>
+      <div class="image-title-wrap">
+        <button type="button" class="try-again-btn" onclick="removeUpload()">
+          <span class="try-again-text">再試行</span>
+        </button>
+      </div>
 
-            {% include buy_me_a_coffee.html %}
-            {% include sns_promotion.html %}
-        </div>
+      {% include buy_me_a_coffee.html %} {% include sns_promotion.html %}
     </div>
-    
-    {% include vote_section_ja.html %}
-    
-    {% include comment_section_ja.html %}
-    
-    <div class="share-contents" style="display:none;">
-        <div class="sns-share">シェア</div>
-        <ul class="sns">
-            <li>
-            <a href="#n" onclick="fn_sendFB('facebook');return false;" class="facebook" target="_self" title="Facebook シェア"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('twitter');return false;" class="twitter" target="_self" title="Twitter シェア"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('band');return false;" class="band" target="_self" title="NaverBand シェア"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="kakaotalk" target="_self" title="Kakaotalk シェア"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('kakaostory');return false;" class="kakaostory" target="_self" title="Kakaostory シェア"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="Url Copy"></a>
-            </li>
-        </ul>
-    </div>
+  </div>
+
+  {% include comment_section_ja.html %}
+
+  <div class="share-contents" style="display: none">
+    <div class="sns-share">シェア</div>
+    <ul class="sns">
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('facebook');return false;"
+          class="facebook"
+          target="_self"
+          title="Facebook シェア"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('twitter');return false;"
+          class="twitter"
+          target="_self"
+          title="Twitter シェア"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('band');return false;"
+          class="band"
+          target="_self"
+          title="NaverBand シェア"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('kakaotalk');return false;"
+          class="kakaotalk"
+          target="_self"
+          title="Kakaotalk シェア"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('kakaostory');return false;"
+          class="kakaostory"
+          target="_self"
+          title="Kakaostory シェア"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('copyurl');return false;"
+          class="copyurl"
+          target="_self"
+          title="Url Copy"
+        ></a>
+      </li>
+    </ul>
+  </div>
 </div>

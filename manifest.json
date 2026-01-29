@@ -1,6 +1,6 @@
 {
-  "short_name": "KpopFaceTest",
-  "name": "케이팝 소속사 얼굴상 테스트",
+  "short_name": "상견례 얼굴상",
+  "name": "상견례 얼굴상 테스트",
   "icons": [
     {
       "src": "favicon.png",
@@ -21,7 +21,7 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots" : [
+  "screenshots": [
     {
       "src": "screenshot.jpg",
       "sizes": "1280x720",
@@ -31,8 +31,8 @@
   ],
   "shortcuts": [
     {
-      "name": "KpopFaceTest",
-      "url": "https://moony01.com/kpopface/"
+      "name": "상견례 얼굴상",
+      "url": "https://moony01.com/sanggyeonrye-test/"
     }
   ],
   "related_applications": [
@@ -41,13 +41,12 @@
       "url": "https://play.google.com/store/apps/details?id=com.mhhan01.kpopface"
     }
   ],
-  "start_url": "https://moony01.com/kpopface/",
+  "start_url": "/sanggyeonrye-test/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#283618",
-  "background_color": "#ffffff",
-  "description": "인공지능을 이용한 케이팝 소속사 얼굴상 테스트",
-  "scope": "/",
+  "theme_color": "#D4A5A5",
+  "background_color": "#FFF5F5",
+  "description": "AI가 판정하는 상견례 얼굴상 테스트",
+  "scope": "/sanggyeonrye-test/",
   "iarc_rating_id": "e58c174a-81d2-5c3c-32cc-34b8de4a52e9"
-
 }

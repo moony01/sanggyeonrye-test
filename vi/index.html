@@ -1,111 +1,153 @@
 ---
 layout: default
-title: Kiểm tra Phân tích Khuôn mặt KPOP
-description: Kiểm tra Phân tích Khuôn mặt KPOP Entertainment Company bằng Trí tuệ Nhân tạo
+title: Bài test tướng mặt gặp mặt gia đình
+description: AI phân tích ấn tượng đầu tiên khi gặp mặt gia đình!
 lang: vi
 ---
+
 <div class="container content-wrapper">
-    {% include site-logo.html %}
-    <h1>Công ty K-POP nào hợp với visual của tôi? K-POP Visual Match Test</h1>
-    <div class="language">
-        <span>language:</span>
-        <select name="lang" id="lang" onchange="fnChangeLang(this)">
-            <option value="ko" id="ko">한국어</option>
-            <option value="en" id="en">English</option>
-            <option value="de" id="de">Deutsch</option>
-            <option value="es" id="es">Español</option>
-            <option value="fr" id="fr">Français</option>
-            <option value="id" id="id">Indonesia</option>
-            <option value="ja" id="ja">日本語</option>
-            <option value="nl" id="nl">Nederlands</option>
-            <option value="pl" id="pl">Polski</option>
-            <option value="pt" id="pt">Português</option>
-            <option value="ru" id="ru">Русский</option>
-            <option value="tr" id="tr">Türkçe</option>
-            <option value="uk" id="uk">Українська</option>
-            <option value="vi" id="vi" selected="selected">Tiếng việt</option>
-            <option value="zh" id="zh">中文</option>
-        </select>
+  {% include site-logo.html %}
+  <h1>Bài test tướng mặt gặp mặt gia đình</h1>
+  <div class="language">
+    <span>language:</span>
+    <select name="lang" id="lang" onchange="fnChangeLang(this)">
+      <option value="ko" id="ko">한국어</option>
+      <option value="en" id="en">English</option>
+      <option value="id" id="id">Indonesia</option>
+      <option value="ja" id="ja">日本語</option>
+      <option value="vi" id="vi" selected="selected">Tiếng việt</option>
+      <option value="zh" id="zh">中文</option>
+    </select>
+  </div>
+  {% include display02.html %}
+  <div class="gender-select">
+    <span>1. Vui lòng chọn giới tính của bạn</span>
+    <div class="gender-select-switch">
+      <span>Nữ</span>
+      <input type="checkbox" id="gender" onclick="fnGenderSelect(this)" /><label
+        for="gender"
+        >Toggle</label
+      >
+      <span>Nam</span>
     </div>
-    {% include display02.html %}
-    <div class="gender-select">
-        <span>1. Vui lòng chọn giới tính của bạn</span>
-        <div class="gender-select-switch">
-            <span>Nữ</span>
-            <input type="checkbox" id="gender" onclick="fnGenderSelect(this)"/><label for="gender">Toggle</label>
-            <span>Nam</span>
-        </div>
-    </div>
+  </div>
     <div class="tips-contents">
         <div class="tips-title">2. TIP</div>
         <div>
             <li>Vui lòng tải lên một bức ảnh với gương mặt rõ ràng để có kết quả chính xác.</li>
-            <li>AI được đào tạo trên dữ liệu lớn của các nghệ sĩ đại diện từ SM, JYP và YG sẽ phân tích kiểu khuôn mặt công ty của bạn!</li>
+            <li>AI được đào tạo từ dữ liệu sao Hàn (Tướng Đỗ Ngay vs Tướng Bị Từ Chối) phân tích ấn tượng đầu tiên của bạn!</li>
             <li>Vui lòng thưởng thức kết quả chỉ cho vui.</li>
             <li style="color:red">Hình ảnh đã tải lên sẽ không được lưu ở bất kỳ đâu.</li>
         </div>
     </div>
-    <div class="file-upload">
-        <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
-        <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
-            <div class="drag-text">
-                <img class="baseline_upload" src="../static/img/ico-upload.png">
-                <h3>3. Kéo hoặc nhấn để tải lên hình ảnh.</h3>
-            </div>
-        </div>
-        <div class="file-upload-content">
-            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-            <div id="loading" class="animated bounce">
-                <!-- <div class="spinner-border" role="status">
+  </div>
+  <div class="file-upload">
+    <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
+    <div class="image-upload-wrap">
+      <input
+        class="file-upload-input"
+        type="file"
+        onchange="readURL(this);"
+        onclick="$('.file-upload-input').trigger( 'click' )"
+        accept="image/*"
+      />
+      <div class="drag-text">
+        <img class="baseline_upload" src="../static/img/ico-upload.png" />
+        <h3>3. Kéo hoặc nhấn để tải lên hình ảnh.</h3>
+      </div>
+    </div>
+    <div class="file-upload-content">
+      <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+      <div id="loading" class="animated bounce">
+        <!-- <div class="spinner-border" role="status">
                     <span class="sr-only">Loading...</span>
                 </div> -->
-                <i class="fas fa-circle-notch fa-spin"></i>
-                <p class="text-center">AI đang phân tích khuôn mặt công ty KPOP của bạn.</p>
-            </div>
-            <p class="result-messege"></p>
-            <div id="label-container"></div>
-            <!-- Lưu hình ảnh kết quả Button -->
-            <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
-                <i class="fas fa-camera"></i>
-                <span class="save-image-text">Lưu hình ảnh kết quả</span>
-            </button>
-            <div class="image-title-wrap">
-                <button type="button" class="try-again-btn" onclick="removeUpload()">
-                    <span class="try-again-text">Thử lại</span>
-                </button>
-            </div>
+        <i class="fas fa-circle-notch fa-spin"></i>
+        <p class="text-center">
+          AI đang phân tích khuôn mặt công ty KPOP của bạn.
+        </p>
+      </div>
+      <p class="result-messege"></p>
+      <div id="label-container"></div>
+      <!-- Lưu hình ảnh kết quả Button -->
+      <button
+        type="button"
+        id="save-image-btn"
+        class="save-image-btn"
+        onclick="fnSaveResultImage()"
+      >
+        <i class="fas fa-camera"></i>
+        <span class="save-image-text">Lưu hình ảnh kết quả</span>
+      </button>
+      <div class="image-title-wrap">
+        <button type="button" class="try-again-btn" onclick="removeUpload()">
+          <span class="try-again-text">Thử lại</span>
+        </button>
+      </div>
 
-            {% include buy_me_a_coffee.html %}
-            {% include sns_promotion.html %}
-        </div>
+      {% include buy_me_a_coffee.html %} {% include sns_promotion.html %}
     </div>
-    
-    {% include vote_section_vi.html %}
-    
-    {% include comment_section_vi.html %}
-    
-    <div class="share-contents" style="display:none;">
-        <div class="sns-share">Chia sẻ</div>
-        <ul class="sns">
-            <li>
-            <a href="#n" onclick="fn_sendFB('facebook');return false;" class="facebook" target="_self" title="Facebook Chia sẻ"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('twitter');return false;" class="twitter" target="_self" title="Twitter Chia sẻ"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('band');return false;" class="band" target="_self" title="NaverBand Chia sẻ"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="kakaotalk" target="_self" title="Kakaotalk Chia sẻ"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('kakaostory');return false;" class="kakaostory" target="_self" title="Kakaostory Chia sẻ"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="Url Copy"></a>
-            </li>
-        </ul>
-    </div>
+  </div>
+
+  {% include comment_section_vi.html %}
+
+  <div class="share-contents" style="display: none">
+    <div class="sns-share">Chia sẻ</div>
+    <ul class="sns">
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('facebook');return false;"
+          class="facebook"
+          target="_self"
+          title="Facebook Chia sẻ"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('twitter');return false;"
+          class="twitter"
+          target="_self"
+          title="Twitter Chia sẻ"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('band');return false;"
+          class="band"
+          target="_self"
+          title="NaverBand Chia sẻ"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('kakaotalk');return false;"
+          class="kakaotalk"
+          target="_self"
+          title="Kakaotalk Chia sẻ"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('kakaostory');return false;"
+          class="kakaostory"
+          target="_self"
+          title="Kakaostory Chia sẻ"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('copyurl');return false;"
+          class="copyurl"
+          target="_self"
+          title="Url Copy"
+        ></a>
+      </li>
+    </ul>
+  </div>
 </div>

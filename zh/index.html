@@ -1,111 +1,151 @@
 ---
 layout: default
-title: KPOP脸部分析测试
-description: 使用人工智能的KPOP娱乐公司脸部分析测试
+title: 相亲对象面相测试
+description: AI分析你的相亲第一印象！是通行证相还是拒之门外相？
 lang: zh
 ---
+
 <div class="container content-wrapper">
-    {% include site-logo.html %}
-    <h1>我适合哪家K-POP经纪公司？K-POP颜相匹配测试</h1>
-    <div class="language">
-        <span>language:</span>
-        <select name="lang" id="lang" onchange="fnChangeLang(this)">
-            <option value="ko" id="ko">한국어</option>
-            <option value="en" id="en">English</option>
-            <option value="de" id="de">Deutsch</option>
-            <option value="es" id="es">Español</option>
-            <option value="fr" id="fr">Français</option>
-            <option value="id" id="id">Indonesia</option>
-            <option value="ja" id="ja">日本語</option>
-            <option value="nl" id="nl">Nederlands</option>
-            <option value="pl" id="pl">Polski</option>
-            <option value="pt" id="pt">Português</option>
-            <option value="ru" id="ru">Русский</option>
-            <option value="tr" id="tr">Türkçe</option>
-            <option value="uk" id="uk">Українська</option>
-            <option value="vi" id="vi">Tiếng việt</option>
-            <option value="zh" id="zh" selected="selected">中文</option>
-        </select>
+  {% include site-logo.html %}
+  <h1>相亲对象面相测试</h1>
+  <div class="language">
+    <span>language:</span>
+    <select name="lang" id="lang" onchange="fnChangeLang(this)">
+      <option value="ko" id="ko">한국어</option>
+      <option value="en" id="en">English</option>
+      <option value="id" id="id">Indonesia</option>
+      <option value="ja" id="ja">日本語</option>
+      <option value="vi" id="vi">Tiếng việt</option>
+      <option value="zh" id="zh" selected="selected">中文</option>
+    </select>
+  </div>
+  {% include display02.html %}
+  <div class="gender-select">
+    <span>1. 请选择您的性别</span>
+    <div class="gender-select-switch">
+      <span>女性</span>
+      <input type="checkbox" id="gender" onclick="fnGenderSelect(this)" /><label
+        for="gender"
+        >Toggle</label
+      >
+      <span>男性</span>
     </div>
-    {% include display02.html %}
-    <div class="gender-select">
-        <span>1. 请选择您的性别</span>
-        <div class="gender-select-switch">
-            <span>女性</span>
-            <input type="checkbox" id="gender" onclick="fnGenderSelect(this)"/><label for="gender">Toggle</label>
-            <span>男性</span>
-        </div>
-    </div>
+  </div>
     <div class="tips-contents">
         <div class="tips-title">2. TIP</div>
         <div>
             <li>请上传一张清晰展示您脸部的照片以获得准确的结果。</li>
-            <li>基于SM、JYP、YG代表艺人大数据的AI将分析您的所属社颜相！</li>
+            <li>学习韩国艺人(通行证相 vs 拒之门外相)数据的AI分析您的相亲第一印象！</li>
             <li>请仅将结果用于娱乐。</li>
             <li style="color:red">上传的图像不会保存在任何地方。</li>
         </div>
     </div>
-    <div class="file-upload">
-        <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
-        <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" onclick="$('.file-upload-input').trigger( 'click' )" accept="image/*" />
-            <div class="drag-text">
-                <img class="baseline_upload" src="../static/img/ico-upload.png">
-                <h3>3. 拖放或按下以上传图像。</h3>
-            </div>
-        </div>
-        <div class="file-upload-content">
-            <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-            <div id="loading" class="animated bounce">
-                <!-- <div class="spinner-border" role="status">
+  </div>
+  <div class="file-upload">
+    <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
+    <div class="image-upload-wrap">
+      <input
+        class="file-upload-input"
+        type="file"
+        onchange="readURL(this);"
+        onclick="$('.file-upload-input').trigger( 'click' )"
+        accept="image/*"
+      />
+      <div class="drag-text">
+        <img class="baseline_upload" src="../static/img/ico-upload.png" />
+        <h3>3. 拖放或按下以上传图像。</h3>
+      </div>
+    </div>
+    <div class="file-upload-content">
+      <img class="file-upload-image" id="face-image" src="#" alt="your image" />
+      <div id="loading" class="animated bounce">
+        <!-- <div class="spinner-border" role="status">
                     <span class="sr-only">Loading...</span>
                 </div> -->
-                <i class="fas fa-circle-notch fa-spin"></i>
-                <p class="text-center">AI正在分析您的KPOP代理机构脸部。</p>
-            </div>
-            <p class="result-messege"></p>
-            <div id="label-container"></div>
-            <!-- 保存结果图片 Button -->
-            <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
-                <i class="fas fa-camera"></i>
-                <span class="save-image-text">保存结果图片</span>
-            </button>
-            <div class="image-title-wrap">
-                <button type="button" class="try-again-btn" onclick="removeUpload()">
-                    <span class="try-again-text">重試</span>
-                </button>
-            </div>
+        <i class="fas fa-circle-notch fa-spin"></i>
+        <p class="text-center">AI正在分析您的KPOP代理机构脸部。</p>
+      </div>
+      <p class="result-messege"></p>
+      <div id="label-container"></div>
+      <!-- 保存结果图片 Button -->
+      <button
+        type="button"
+        id="save-image-btn"
+        class="save-image-btn"
+        onclick="fnSaveResultImage()"
+      >
+        <i class="fas fa-camera"></i>
+        <span class="save-image-text">保存结果图片</span>
+      </button>
+      <div class="image-title-wrap">
+        <button type="button" class="try-again-btn" onclick="removeUpload()">
+          <span class="try-again-text">重試</span>
+        </button>
+      </div>
 
-            {% include buy_me_a_coffee.html %}
-            {% include sns_promotion.html %}
-        </div>
+      {% include buy_me_a_coffee.html %} {% include sns_promotion.html %}
     </div>
-    
-    {% include vote_section_zh.html %}
-    
-    {% include comment_section_zh.html %}
-    
-    <div class="share-contents" style="display:none;">
-        <div class="sns-share">分享</div>
-        <ul class="sns">
-            <li>
-            <a href="#n" onclick="fn_sendFB('facebook');return false;" class="facebook" target="_self" title="Facebook 分享"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('twitter');return false;" class="twitter" target="_self" title="Twitter 分享"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('band');return false;" class="band" target="_self" title="Naver Band 分享"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('kakaotalk');return false;" class="kakaotalk" target="_self" title="Kakaotalk 分享"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('kakaostory');return false;" class="kakaostory" target="_self" title="Kakaostory 分享"></a>
-            </li>
-            <li>
-            <a href="#n" onclick="fn_sendFB('copyurl');return false;" class="copyurl" target="_self" title="Url Copy"></a>
-            </li>
-        </ul>
-    </div>
+  </div>
+
+  {% include comment_section_zh.html %}
+
+  <div class="share-contents" style="display: none">
+    <div class="sns-share">分享</div>
+    <ul class="sns">
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('facebook');return false;"
+          class="facebook"
+          target="_self"
+          title="Facebook 分享"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('twitter');return false;"
+          class="twitter"
+          target="_self"
+          title="Twitter 分享"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('band');return false;"
+          class="band"
+          target="_self"
+          title="Naver Band 分享"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('kakaotalk');return false;"
+          class="kakaotalk"
+          target="_self"
+          title="Kakaotalk 分享"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('kakaostory');return false;"
+          class="kakaostory"
+          target="_self"
+          title="Kakaostory 分享"
+        ></a>
+      </li>
+      <li>
+        <a
+          href="#n"
+          onclick="fn_sendFB('copyurl');return false;"
+          class="copyurl"
+          target="_self"
+          title="Url Copy"
+        ></a>
+      </li>
+    </ul>
+  </div>
 </div>

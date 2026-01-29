@@ -4,3 +4,7 @@ _site
 .jekyll-metadata
 vendor
 .agent
+
+# Windows reserved names (prevent accidental creation)
+nul
+NUL

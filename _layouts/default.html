@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ page.lang }}">
   <head>
     <meta charset="UTF-8" />
@@ -7,11 +7,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="description"
-      content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}"
+      content="{% if page.description %}{{ page.description }}{% else %}AI가 판정하는 상견례 얼굴상 테스트! 프리패스상 vs 문전박대상, 당신의 관상은?{% endif %}"
     />
-    <meta name="theme-color" content="#283618" />
+    <meta name="theme-color" content="#D4A5A5" />
     <meta
-      content="{{ site.url }}/kpopface/static/img/share/kakao-url-share.png"
+      content="{{ site.url }}/sanggyeonrye-test/static/img/share/kakao-url-share.png"
       property="image"
     />
 
@@ -22,12 +22,12 @@
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="기술비밀공유소: 소프트웨어 개발과 IT 혁신의 열쇠를 찾아서"
+      title="상견례 얼굴상 테스트"
       href="https://moony01.com/sitemap.xml"
     />
 
     {% if page.lang != "ko" %}
-    <link rel="icon" href="../favicon.png" type="image/x-icon" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
 
     <link rel="stylesheet" href="../static/css/common.css" />
     <link rel="stylesheet" href="../static/css/loading.css" />
@@ -54,7 +54,7 @@
 
     <link rel="manifest" href="../manifestLang.json" />
     {% else %}
-    <link rel="icon" href="favicon.png" type="image/x-icon" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
     <link rel="stylesheet" href="static/css/common.css" />
     <link rel="stylesheet" href="static/css/loading.css" />
@@ -111,112 +111,203 @@
     <meta content="{{ page.title }}" property="og:title" />
     <meta content="article" property="og:type" />
     {% else %}
-    <meta content="{{ site.title }}" property="og:title" />
+    <meta content="상견례 얼굴상 테스트" property="og:title" />
     <meta content="website" property="og:type" />
     {% endif %} {% if page.url %}
-    <meta content="{{ site.url }}/kpopface{{ page.url }}" property="og:url" />
+    <meta
+      content="{{ site.url }}/sanggyeonrye-test{{ page.url }}"
+      property="og:url"
+    />
     {% endif %}
 
     <meta
-      content="{{ site.url }}/kpopface/static/img/share/kakao-url-share.png"
+      content="{{ site.url }}/sanggyeonrye-test/static/img/share/kakao-url-share.png"
       property="og:image"
     />
 
     <!-- OG 보완 -->
-    <meta property="og:site_name" content="K-Pop Face Test">
+    <meta property="og:site_name" content="상견례 얼굴상 테스트" />
     {% if page.lang == "ko" %}
-    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale" content="ko_KR" />
     {% elsif page.lang == "en" %}
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content="en_US" />
     {% elsif page.lang == "ja" %}
-    <meta property="og:locale" content="ja_JP">
+    <meta property="og:locale" content="ja_JP" />
     {% elsif page.lang == "zh" %}
-    <meta property="og:locale" content="zh_CN">
+    <meta property="og:locale" content="zh_CN" />
     {% elsif page.lang == "de" %}
-    <meta property="og:locale" content="de_DE">
+    <meta property="og:locale" content="de_DE" />
     {% elsif page.lang == "es" %}
-    <meta property="og:locale" content="es_ES">
+    <meta property="og:locale" content="es_ES" />
     {% elsif page.lang == "fr" %}
-    <meta property="og:locale" content="fr_FR">
+    <meta property="og:locale" content="fr_FR" />
     {% elsif page.lang == "id" %}
-    <meta property="og:locale" content="id_ID">
+    <meta property="og:locale" content="id_ID" />
     {% elsif page.lang == "nl" %}
-    <meta property="og:locale" content="nl_NL">
+    <meta property="og:locale" content="nl_NL" />
     {% elsif page.lang == "pl" %}
-    <meta property="og:locale" content="pl_PL">
+    <meta property="og:locale" content="pl_PL" />
     {% elsif page.lang == "pt" %}
-    <meta property="og:locale" content="pt_BR">
+    <meta property="og:locale" content="pt_BR" />
     {% elsif page.lang == "ru" %}
-    <meta property="og:locale" content="ru_RU">
+    <meta property="og:locale" content="ru_RU" />
     {% elsif page.lang == "tr" %}
-    <meta property="og:locale" content="tr_TR">
+    <meta property="og:locale" content="tr_TR" />
     {% elsif page.lang == "uk" %}
-    <meta property="og:locale" content="uk_UA">
+    <meta property="og:locale" content="uk_UA" />
     {% elsif page.lang == "vi" %}
-    <meta property="og:locale" content="vi_VN">
+    <meta property="og:locale" content="vi_VN" />
     {% else %}
-    <meta property="og:locale" content="ko_KR">
+    <meta property="og:locale" content="ko_KR" />
     {% endif %}
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image" />
     {% if page.title %}
-    <meta name="twitter:title" content="{{ page.title }}">
+    <meta name="twitter:title" content="{{ page.title }}" />
     {% else %}
-    <meta name="twitter:title" content="{{ site.title }}">
-    {% endif %}
-    {% if page.description %}
-    <meta name="twitter:description" content="{{ page.description }}">
+    <meta name="twitter:title" content="{{ site.title }}" />
+    {% endif %} {% if page.description %}
+    <meta name="twitter:description" content="{{ page.description }}" />
     {% else %}
-    <meta name="twitter:description" content="{{ site.description }}">
+    <meta name="twitter:description" content="{{ site.description }}" />
     {% endif %}
-    <meta name="twitter:image" content="{{ site.url }}/kpopface/static/img/share/kakao-url-share.png">
+    <meta
+      name="twitter:image"
+      content="{{ site.url }}/sanggyeonrye-test/static/img/share/kakao-url-share.png"
+    />
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="{{ site.url }}/kpopface{{ page.url }}">
+    <link
+      rel="canonical"
+      href="{{ site.url }}/sanggyeonrye-test{{ page.url }}"
+    />
 
     <!-- hreflang 다국어 SEO -->
-    <link rel="alternate" hreflang="ko" href="{{ site.url }}/kpopface/">
-    <link rel="alternate" hreflang="en" href="{{ site.url }}/kpopface/en/">
-    <link rel="alternate" hreflang="ja" href="{{ site.url }}/kpopface/ja/">
-    <link rel="alternate" hreflang="zh" href="{{ site.url }}/kpopface/zh/">
-    <link rel="alternate" hreflang="de" href="{{ site.url }}/kpopface/de/">
-    <link rel="alternate" hreflang="es" href="{{ site.url }}/kpopface/es/">
-    <link rel="alternate" hreflang="fr" href="{{ site.url }}/kpopface/fr/">
-    <link rel="alternate" hreflang="id" href="{{ site.url }}/kpopface/id/">
-    <link rel="alternate" hreflang="nl" href="{{ site.url }}/kpopface/nl/">
-    <link rel="alternate" hreflang="pl" href="{{ site.url }}/kpopface/pl/">
-    <link rel="alternate" hreflang="pt" href="{{ site.url }}/kpopface/pt/">
-    <link rel="alternate" hreflang="ru" href="{{ site.url }}/kpopface/ru/">
-    <link rel="alternate" hreflang="tr" href="{{ site.url }}/kpopface/tr/">
-    <link rel="alternate" hreflang="uk" href="{{ site.url }}/kpopface/uk/">
-    <link rel="alternate" hreflang="vi" href="{{ site.url }}/kpopface/vi/">
-    <link rel="alternate" hreflang="x-default" href="{{ site.url }}/kpopface/en/">
+    <link
+      rel="alternate"
+      hreflang="ko"
+      href="{{ site.url }}/sanggyeonrye-test/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="{{ site.url }}/sanggyeonrye-test/en/"
+    />
+    <link
+      rel="alternate"
+      hreflang="ja"
+      href="{{ site.url }}/sanggyeonrye-test/ja/"
+    />
+    <link
+      rel="alternate"
+      hreflang="zh"
+      href="{{ site.url }}/sanggyeonrye-test/zh/"
+    />
+    <link
+      rel="alternate"
+      hreflang="de"
+      href="{{ site.url }}/sanggyeonrye-test/de/"
+    />
+    <link
+      rel="alternate"
+      hreflang="es"
+      href="{{ site.url }}/sanggyeonrye-test/es/"
+    />
+    <link
+      rel="alternate"
+      hreflang="fr"
+      href="{{ site.url }}/sanggyeonrye-test/fr/"
+    />
+    <link
+      rel="alternate"
+      hreflang="id"
+      href="{{ site.url }}/sanggyeonrye-test/id/"
+    />
+    <link
+      rel="alternate"
+      hreflang="nl"
+      href="{{ site.url }}/sanggyeonrye-test/nl/"
+    />
+    <link
+      rel="alternate"
+      hreflang="pl"
+      href="{{ site.url }}/sanggyeonrye-test/pl/"
+    />
+    <link
+      rel="alternate"
+      hreflang="pt"
+      href="{{ site.url }}/sanggyeonrye-test/pt/"
+    />
+    <link
+      rel="alternate"
+      hreflang="ru"
+      href="{{ site.url }}/sanggyeonrye-test/ru/"
+    />
+    <link
+      rel="alternate"
+      hreflang="tr"
+      href="{{ site.url }}/sanggyeonrye-test/tr/"
+    />
+    <link
+      rel="alternate"
+      hreflang="uk"
+      href="{{ site.url }}/sanggyeonrye-test/uk/"
+    />
+    <link
+      rel="alternate"
+      hreflang="vi"
+      href="{{ site.url }}/sanggyeonrye-test/vi/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="{{ site.url }}/sanggyeonrye-test/en/"
+    />
 
     <!-- JSON-LD 구조화 데이터 -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "K-Pop Face Test",
-      "alternateName": "{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}",
-      "description": "{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}",
-      "url": "{{ site.url }}/kpopface{{ page.url }}",
-      "applicationCategory": "Entertainment",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "KRW"
-      },
-      "inLanguage": ["ko", "en", "ja", "zh", "de", "es", "fr", "id", "nl", "pl", "pt", "ru", "tr", "uk", "vi"]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "상견례 얼굴상 테스트",
+        "alternateName": "{% if page.title %}{{ page.title }}{% else %}상견례 얼굴상 테스트{% endif %}",
+        "description": "{% if page.description %}{{ page.description }}{% else %}AI가 판정하는 상견례 얼굴상 테스트! 프리패스상 vs 문전박대상, 당신의 관상은?{% endif %}",
+        "url": "{{ site.url }}/sanggyeonrye-test{{ page.url }}",
+        "applicationCategory": "Entertainment",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "KRW"
+        },
+        "inLanguage": [
+          "ko",
+          "en",
+          "ja",
+          "zh",
+          "de",
+          "es",
+          "fr",
+          "id",
+          "nl",
+          "pl",
+          "pt",
+          "ru",
+          "tr",
+          "uk",
+          "vi"
+        ]
+      }
     </script>
 
     {% if page.description %}
     <meta content="{{ page.description }}" property="og:description" />
     {% else %}
-    <meta content="{{ site.description }}" property="og:description" />
+    <meta
+      content="AI가 판정하는 상견례 얼굴상 테스트! 프리패스상 vs 문전박대상, 당신의 관상은?"
+      property="og:description"
+    />
     {% endif %} {% if jekyll.environment == "production" %}
     <!-- Google Analytics -->
     <script
@@ -262,7 +353,7 @@
               .then(function (registration) {
                 console.log(
                   "Service Worker registered with scope:",
-                  registration.scope
+                  registration.scope,
                 );
               })
               .catch(function (err) {
@@ -274,7 +365,7 @@
               .then(function (registration) {
                 console.log(
                   "Service Worker registered with scope:",
-                  registration.scope
+                  registration.scope,
                 );
               })
               .catch(function (err) {
@@ -330,8 +421,8 @@
       </div>
       <!--     {% include disqus.html %} -->
       <footer class="footer">
-        <span>© kpopface 2023. ALL Rights Reserved.</span>
-        <a class="privacy" href="{{ site.url }}/kpopface/privacy.html"
+        <span>© 상견례 얼굴상 테스트 2025. ALL Rights Reserved.</span>
+        <a class="privacy" href="{{ site.url }}/sanggyeonrye-test/privacy.html"
           >Privacy policy</a
         >
       </footer>
