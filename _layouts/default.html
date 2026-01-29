@@ -135,33 +135,15 @@
     <meta property="og:locale" content="ja_JP" />
     {% elsif page.lang == "zh" %}
     <meta property="og:locale" content="zh_CN" />
-    {% elsif page.lang == "de" %}
-    <meta property="og:locale" content="de_DE" />
-    {% elsif page.lang == "es" %}
-    <meta property="og:locale" content="es_ES" />
-    {% elsif page.lang == "fr" %}
-    <meta property="og:locale" content="fr_FR" />
-    {% elsif page.lang == "id" %}
-    <meta property="og:locale" content="id_ID" />
-    {% elsif page.lang == "nl" %}
-    <meta property="og:locale" content="nl_NL" />
-    {% elsif page.lang == "pl" %}
-    <meta property="og:locale" content="pl_PL" />
-    {% elsif page.lang == "pt" %}
-    <meta property="og:locale" content="pt_BR" />
-    {% elsif page.lang == "ru" %}
-    <meta property="og:locale" content="ru_RU" />
-    {% elsif page.lang == "tr" %}
-    <meta property="og:locale" content="tr_TR" />
-    {% elsif page.lang == "uk" %}
-    <meta property="og:locale" content="uk_UA" />
     {% elsif page.lang == "vi" %}
     <meta property="og:locale" content="vi_VN" />
+    {% elsif page.lang == "id" %}
+    <meta property="og:locale" content="id_ID" />
     {% else %}
     <meta property="og:locale" content="ko_KR" />
     {% endif %}
 
-    <!-- Twitter Card -->
+    <!-- X (Twitter) Card -->
     <meta name="twitter:card" content="summary_large_image" />
     {% if page.title %}
     <meta name="twitter:title" content="{{ page.title }}" />
@@ -184,86 +166,13 @@
     />
 
     <!-- hreflang 다국어 SEO -->
-    <link
-      rel="alternate"
-      hreflang="ko"
-      href="{{ site.url }}/sanggyeonrye-test/"
-    />
-    <link
-      rel="alternate"
-      hreflang="en"
-      href="{{ site.url }}/sanggyeonrye-test/en/"
-    />
-    <link
-      rel="alternate"
-      hreflang="ja"
-      href="{{ site.url }}/sanggyeonrye-test/ja/"
-    />
-    <link
-      rel="alternate"
-      hreflang="zh"
-      href="{{ site.url }}/sanggyeonrye-test/zh/"
-    />
-    <link
-      rel="alternate"
-      hreflang="de"
-      href="{{ site.url }}/sanggyeonrye-test/de/"
-    />
-    <link
-      rel="alternate"
-      hreflang="es"
-      href="{{ site.url }}/sanggyeonrye-test/es/"
-    />
-    <link
-      rel="alternate"
-      hreflang="fr"
-      href="{{ site.url }}/sanggyeonrye-test/fr/"
-    />
-    <link
-      rel="alternate"
-      hreflang="id"
-      href="{{ site.url }}/sanggyeonrye-test/id/"
-    />
-    <link
-      rel="alternate"
-      hreflang="nl"
-      href="{{ site.url }}/sanggyeonrye-test/nl/"
-    />
-    <link
-      rel="alternate"
-      hreflang="pl"
-      href="{{ site.url }}/sanggyeonrye-test/pl/"
-    />
-    <link
-      rel="alternate"
-      hreflang="pt"
-      href="{{ site.url }}/sanggyeonrye-test/pt/"
-    />
-    <link
-      rel="alternate"
-      hreflang="ru"
-      href="{{ site.url }}/sanggyeonrye-test/ru/"
-    />
-    <link
-      rel="alternate"
-      hreflang="tr"
-      href="{{ site.url }}/sanggyeonrye-test/tr/"
-    />
-    <link
-      rel="alternate"
-      hreflang="uk"
-      href="{{ site.url }}/sanggyeonrye-test/uk/"
-    />
-    <link
-      rel="alternate"
-      hreflang="vi"
-      href="{{ site.url }}/sanggyeonrye-test/vi/"
-    />
-    <link
-      rel="alternate"
-      hreflang="x-default"
-      href="{{ site.url }}/sanggyeonrye-test/en/"
-    />
+    <link rel="alternate" hreflang="ko" href="{{ site.url }}/sanggyeonrye-test/" />
+    <link rel="alternate" hreflang="en" href="{{ site.url }}/sanggyeonrye-test/en/" />
+    <link rel="alternate" hreflang="ja" href="{{ site.url }}/sanggyeonrye-test/ja/" />
+    <link rel="alternate" hreflang="zh" href="{{ site.url }}/sanggyeonrye-test/zh/" />
+    <link rel="alternate" hreflang="vi" href="{{ site.url }}/sanggyeonrye-test/vi/" />
+    <link rel="alternate" hreflang="id" href="{{ site.url }}/sanggyeonrye-test/id/" />
+    <link rel="alternate" hreflang="x-default" href="{{ site.url }}/sanggyeonrye-test/en/" />
 
     <!-- JSON-LD 구조화 데이터 -->
     <script type="application/ld+json">
@@ -281,23 +190,7 @@
           "price": "0",
           "priceCurrency": "KRW"
         },
-        "inLanguage": [
-          "ko",
-          "en",
-          "ja",
-          "zh",
-          "de",
-          "es",
-          "fr",
-          "id",
-          "nl",
-          "pl",
-          "pt",
-          "ru",
-          "tr",
-          "uk",
-          "vi"
-        ]
+        "inLanguage": ["ko", "en", "ja", "zh", "vi", "id"]
       }
     </script>
 

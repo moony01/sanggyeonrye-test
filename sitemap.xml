@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://moony01.com/sanggyeonrye-test/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://moony01.com/sanggyeonrye-test/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://moony01.com/sanggyeonrye-test/en/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://moony01.com/sanggyeonrye-test/ja/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://moony01.com/sanggyeonrye-test/zh/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://moony01.com/sanggyeonrye-test/vi/"/>
+    <xhtml:link rel="alternate" hreflang="id" href="https://moony01.com/sanggyeonrye-test/id/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://moony01.com/sanggyeonrye-test/en/"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://moony01.com/sanggyeonrye-test/en/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moony01.com/sanggyeonrye-test/ja/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moony01.com/sanggyeonrye-test/zh/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moony01.com/sanggyeonrye-test/vi/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moony01.com/sanggyeonrye-test/id/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://moony01.com/sanggyeonrye-test/privacy.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>
