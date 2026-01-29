@@ -17,14 +17,6 @@
     id="crossSiteToggle"
     aria-label="메뉴 토글"
   >
-    <span class="pig-tail-arrow">
-      <svg viewBox="0 0 45 55" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- 돼지꼬리: 위로 올라갔다가 아래로 -->
-        <path d="M2 30 Q2 5, 25 5 Q40 5, 40 20 L40 45" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <!-- 화살표 머리 -->
-        <path d="M34 40 L40 52 L46 40" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </span>
     <span class="link-icon toggle-open">☰</span>
     <span class="link-icon toggle-close">✕</span>
   </button>
@@ -343,42 +335,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
-  /* 돼지꼬리 화살표 - SVG로 완벽한 곡선 */
-  .pig-tail-arrow {
-    position: absolute;
-    right: 45px;
-    top: -30px;
-    width: 45px;
-    height: 55px;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    pointer-events: none;
-  }
-
-  .pig-tail-arrow svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .cross-site-toggle.show-tooltip .pig-tail-arrow {
-    opacity: 1;
-    visibility: visible;
-    animation: pigTailBounce 1.5s ease-in-out infinite;
-  }
-
-  @keyframes pigTailBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
-  }
-
-  /* 기존 ::before 제거 */
-  .cross-site-toggle::before {
-    display: none;
-  }
-
-  .cross-site-toggle.show-tooltip::after,
-  .cross-site-toggle.show-tooltip::before {
+  .cross-site-toggle.show-tooltip::after {
     opacity: 1;
     visibility: visible;
   }
@@ -403,11 +360,6 @@
       max-width: 200px;
       white-space: normal;
       text-align: center;
-    }
-
-    /* 모바일에서 돼지꼬리 숨김 - 공간 부족 */
-    .pig-tail-arrow {
-      display: none;
     }
   }
 </style>
