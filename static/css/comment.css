@@ -773,3 +773,116 @@
         font-size: 1.1rem;
     }
 }
+
+/* =========================
+   Reply (Reply Comment) Styles
+   ========================= */
+
+/* Reply Indicator (shows when replying to someone) */
+.reply-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+    border: 1px solid var(--cmt-primary);
+    border-radius: var(--cmt-radius-sm);
+    font-size: 0.9rem;
+    color: var(--cmt-primary-dark);
+    font-weight: 600;
+}
+
+.reply-indicator span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-cancel-reply {
+    background: transparent;
+    border: 1px solid var(--cmt-primary);
+    color: var(--cmt-primary);
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-cancel-reply:hover {
+    background: var(--cmt-primary);
+    color: #fff;
+}
+
+/* Reply Button in Comment */
+.btn-reply {
+    background: none;
+    border: none;
+    color: var(--cmt-text-sub);
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.btn-reply:hover {
+    color: var(--cmt-primary);
+    background: rgba(89, 125, 53, 0.1);
+}
+
+.btn-reply i {
+    font-size: 0.8rem;
+}
+
+/* Reply Comment Style (Indented) */
+.comment-reply {
+    margin-left: 32px;
+    padding-left: 1.5rem !important;
+    border-left: 3px solid var(--cmt-primary);
+    background: #fafbfc !important;
+}
+
+.comment-reply:hover {
+    background: #f5f6f8 !important;
+}
+
+/* Badge for FREEPASS and MOONJEON */
+.badge-freepass {
+    background: linear-gradient(135deg, #4CAF50, #8BC34A);
+    color: #fff;
+    border: none;
+}
+
+.badge-moonjeon {
+    background: linear-gradient(135deg, #f44336, #e91e63);
+    color: #fff;
+    border: none;
+}
+
+/* Mobile Responsive for Reply */
+@media (max-width: 520px) {
+    .comment-reply {
+        margin-left: 16px;
+        padding-left: 1rem !important;
+    }
+
+    .reply-indicator {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .btn-cancel-reply {
+        align-self: flex-end;
+    }
+}

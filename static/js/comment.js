@@ -31,6 +31,10 @@ function getSupabase() {
 const commentListElement = null;
 const commentCountElement = null;
 
+// 대댓글 관련 전역 변수
+let replyingToId = null;       // 현재 답글 대상 댓글 ID
+let replyingToNickname = null; // 현재 답글 대상 닉네임
+
 // 다국어 메시지 사전
 const MESSAGES = {
   ko: {
@@ -50,6 +54,9 @@ const MESSAGES = {
     fail: "오류가 발생했습니다.",
     vote_limit: "오늘은 이미 3번 투표하셨어요! 내일 다시 투표해주세요.",
     vote_remain: "투표 완료! (오늘 남은 횟수: {count}회)",
+    reply: "답글",
+    reply_to: "{nickname}님에게 답글",
+    cancel_reply: "취소",
   },
   en: {
     vote_success: "Voted for {agency}! Thank you.",
@@ -69,6 +76,9 @@ const MESSAGES = {
     vote_limit:
       "You've already voted 3 times today! Please come back tomorrow.",
     vote_remain: "Voted! ({count} votes remaining today)",
+    reply: "Reply",
+    reply_to: "Reply to {nickname}",
+    cancel_reply: "Cancel",
   },
   ja: {
     vote_success: "{agency}に投票しました！ありがとうございます。",
@@ -87,6 +97,9 @@ const MESSAGES = {
     fail: "エラーが発生しました。",
     vote_limit: "本日はすでに3回投票しました！明日またお願いします。",
     vote_remain: "投票しました！（本日残り{count}回）",
+    reply: "返信",
+    reply_to: "{nickname}さんへの返信",
+    cancel_reply: "キャンセル",
   },
   zh: {
     vote_success: "已给{agency}投票！谢谢。",
@@ -105,6 +118,9 @@ const MESSAGES = {
     fail: "发生错误。",
     vote_limit: "您今天已经投票3次了！请明天再来。",
     vote_remain: "投票成功！（今天还剩{count}次）",
+    reply: "回复",
+    reply_to: "回复 {nickname}",
+    cancel_reply: "取消",
   },
   es: {
     vote_success: "¡Votado por {agency}! Gracias.",
@@ -123,6 +139,9 @@ const MESSAGES = {
     fail: "Error.",
     vote_limit: "¡Ya has votado 3 veces hoy! Vuelve mañana.",
     vote_remain: "¡Votado! (Quedan {count} votos hoy)",
+    reply: "Responder",
+    reply_to: "Responder a {nickname}",
+    cancel_reply: "Cancelar",
   },
   fr: {
     vote_success: "A voté pour {agency} !",
@@ -141,6 +160,9 @@ const MESSAGES = {
     fail: "Erreur.",
     vote_limit: "Vous avez déjà voté 3 fois aujourd'hui ! Revenez demain.",
     vote_remain: "Voté ! (Il reste {count} votes aujourd'hui)",
+    reply: "Repondre",
+    reply_to: "Repondre a {nickname}",
+    cancel_reply: "Annuler",
   },
   de: {
     vote_success: "Für {agency} gestimmt!",
@@ -160,6 +182,9 @@ const MESSAGES = {
     vote_limit:
       "Sie haben heute bereits 3 Mal abgestimmt! Kommen Sie morgen wieder.",
     vote_remain: "Abgestimmt! (Noch {count} Stimmen heute)",
+    reply: "Antworten",
+    reply_to: "Antwort an {nickname}",
+    cancel_reply: "Abbrechen",
   },
   id: {
     vote_success: "Memilih {agency}!",
@@ -178,6 +203,9 @@ const MESSAGES = {
     fail: "Kesalahan.",
     vote_limit: "Anda sudah memilih 3 kali hari ini! Silakan kembali besok.",
     vote_remain: "Sudah memilih! (Tersisa {count} suara hari ini)",
+    reply: "Balas",
+    reply_to: "Balas ke {nickname}",
+    cancel_reply: "Batal",
   },
   vi: {
     vote_success: "Đã chọn {agency}!",
@@ -196,6 +224,9 @@ const MESSAGES = {
     fail: "Lỗi.",
     vote_limit: "Bạn đã bình chọn 3 lần hôm nay! Hãy quay lại vào ngày mai.",
     vote_remain: "Đã bình chọn! (Còn lại {count} lần hôm nay)",
+    reply: "Tra loi",
+    reply_to: "Tra loi {nickname}",
+    cancel_reply: "Huy",
   },
   // Fallback for others (simple English map)
   pl: {
@@ -367,9 +398,10 @@ async function fetchComments(page = 1) {
 
     const { data, error, count } = await supabaseClient
       .from("sgt_comments")
-      .select("id, created_at, nickname, content, face_type", {
+      .select("id, created_at, nickname, content, face_type, parent_id", {
         count: "exact",
       })
+      .is("parent_id", null) // 원댓글만 페이징 대상
       .order("created_at", { ascending: false })
       .range(from, to);
 
@@ -453,7 +485,7 @@ function renderPagination(totalCount, page) {
   numbersEl.innerHTML = html;
 }
 
-function renderComments(comments) {
+async function renderComments(comments) {
   const listEl = document.getElementById("comment-list");
 
   if (!comments || comments.length === 0) {
@@ -467,53 +499,139 @@ function renderComments(comments) {
     return;
   }
 
+  // 원댓글 ID 목록
+  const parentIds = comments.map((c) => c.id);
+
+  // 대댓글 조회
+  let replies = [];
+  if (parentIds.length > 0) {
+    const { data: replyData } = await supabaseClient
+      .from("sgt_comments")
+      .select("id, created_at, nickname, content, face_type, parent_id")
+      .in("parent_id", parentIds)
+      .order("created_at", { ascending: true });
+    replies = replyData || [];
+  }
+
+  // 대댓글을 parent_id별로 그룹화
+  const repliesByParent = {};
+  replies.forEach((reply) => {
+    if (!repliesByParent[reply.parent_id]) {
+      repliesByParent[reply.parent_id] = [];
+    }
+    repliesByParent[reply.parent_id].push(reply);
+  });
+
   const html = comments
     .map((comment) => {
-      const dateObj = new Date(comment.created_at);
-      const dateStr = `${dateObj.getFullYear()}.${String(dateObj.getMonth() + 1).padStart(2, "0")}.${String(dateObj.getDate()).padStart(2, "0")}`;
-
-      let faceBadge = "";
-      if (comment.face_type && comment.face_type !== "unknown") {
-        const faceType = comment.face_type;
-        let className = "badge-unknown";
-        if (["FREEPASS", "MOONJEON"].includes(faceType)) {
-          className = `badge-${faceType.toLowerCase()}`;
-        }
-        faceBadge = `<span class="face-badge ${className}">${escapeHtml(faceType)}</span>`;
-      }
-
-      return `
-        <div class="comment-item" id="comment-${comment.id}">
-            <div class="cmt-top">
-                <div class="cmt-info">
-                    <span class="cmt-user">${escapeHtml(comment.nickname)}</span>
-                    ${faceBadge}
-                </div>
-                <div class="cmt-right-group">
-                    <span class="cmt-date">${dateStr}</span>
-                    <div class="more-menu-container">
-                        <button class="btn-more" onclick="toggleMenu(${comment.id}, event)" aria-label="댓글 옵션 더보기">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <div id="menu-${comment.id}" class="more-dropdown">
-                            <button onclick="handleEdit(${comment.id}, '${escapeHtml(comment.content)}')">
-                                <i class="fa-solid fa-pen"></i> 수정
-                            </button>
-                            <button onclick="handleDelete(${comment.id})">
-                                <i class="fa-solid fa-trash"></i> 삭제
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cmt-body">
-                <div class="cmt-text">${escapeHtml(comment.content)}</div>
-            </div>
-        </div>`;
+      const commentReplies = repliesByParent[comment.id] || [];
+      return renderSingleComment(comment, false) + renderReplies(commentReplies);
     })
     .join("");
 
   if (listEl) listEl.innerHTML = html;
+}
+
+/**
+ * 단일 댓글 렌더링
+ */
+function renderSingleComment(comment, isReply = false) {
+  const dateObj = new Date(comment.created_at);
+  const dateStr = `${dateObj.getFullYear()}.${String(dateObj.getMonth() + 1).padStart(2, "0")}.${String(dateObj.getDate()).padStart(2, "0")}`;
+
+  let faceBadge = "";
+  if (comment.face_type && comment.face_type !== "unknown") {
+    const faceType = comment.face_type;
+    let className = "badge-unknown";
+    if (["FREEPASS", "MOONJEON"].includes(faceType)) {
+      className = `badge-${faceType.toLowerCase()}`;
+    }
+    faceBadge = `<span class="face-badge ${className}">${escapeHtml(faceType)}</span>`;
+  }
+
+  const replyBtn = !isReply
+    ? `
+        <button class="btn-reply" onclick="startReply(${comment.id}, '${escapeHtml(comment.nickname)}')">
+            <i class="fa-solid fa-reply"></i> ${t("reply")}
+        </button>`
+    : "";
+
+  const itemClass = isReply ? "comment-item comment-reply" : "comment-item";
+
+  return `
+    <div class="${itemClass}" id="comment-${comment.id}">
+        <div class="cmt-top">
+            <div class="cmt-info">
+                <span class="cmt-user">${escapeHtml(comment.nickname)}</span>
+                ${faceBadge}
+            </div>
+            <div class="cmt-right-group">
+                <span class="cmt-date">${dateStr}</span>
+                <div class="more-menu-container">
+                    <button class="btn-more" onclick="toggleMenu(${comment.id}, event)" aria-label="댓글 옵션 더보기">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div id="menu-${comment.id}" class="more-dropdown">
+                        <button onclick="handleEdit(${comment.id}, '${escapeHtml(comment.content)}')">
+                            <i class="fa-solid fa-pen"></i> 수정
+                        </button>
+                        <button onclick="handleDelete(${comment.id})">
+                            <i class="fa-solid fa-trash"></i> 삭제
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cmt-body">
+            <div class="cmt-text">${escapeHtml(comment.content)}</div>
+            ${replyBtn}
+        </div>
+    </div>`;
+}
+
+/**
+ * 대댓글 목록 렌더링
+ */
+function renderReplies(replies) {
+  if (!replies || replies.length === 0) return "";
+  return replies.map((reply) => renderSingleComment(reply, true)).join("");
+}
+
+/**
+ * 답글 작성 시작
+ */
+function startReply(parentId, nickname) {
+  replyingToId = parentId;
+  replyingToNickname = nickname;
+
+  // 답글 표시 UI 업데이트
+  const replyIndicator = document.getElementById("reply-indicator");
+  if (replyIndicator) {
+    replyIndicator.innerHTML = `
+            <span>${t("reply_to", { nickname: nickname })}</span>
+            <button onclick="cancelReply()" class="btn-cancel-reply">
+                <i class="fa-solid fa-xmark"></i> ${t("cancel_reply")}
+            </button>`;
+    replyIndicator.style.display = "flex";
+  }
+
+  // 입력창으로 포커스
+  const contentEl = document.getElementById("cmt-content");
+  if (contentEl) contentEl.focus();
+}
+
+/**
+ * 답글 취소
+ */
+function cancelReply() {
+  replyingToId = null;
+  replyingToNickname = null;
+
+  const replyIndicator = document.getElementById("reply-indicator");
+  if (replyIndicator) {
+    replyIndicator.innerHTML = "";
+    replyIndicator.style.display = "none";
+  }
 }
 
 /**
@@ -636,6 +754,7 @@ async function postComment() {
       password: password,
       content: content,
       face_type: facetype,
+      parent_id: replyingToId, // 대댓글인 경우 parent_id 설정
     };
 
     const { error } = await supabaseClient
@@ -648,6 +767,9 @@ async function postComment() {
     document.getElementById("cmt-password").value = "";
     document.getElementById("cmt-content").value = "";
     document.getElementById("cmt-facetype").value = "unknown";
+
+    // 답글 상태 초기화
+    cancelReply();
 
     alert(t("post_success"));
     fetchComments();
@@ -700,6 +822,8 @@ window.postComment = postComment;
 window.fetchComments = fetchComments;
 window.handleEdit = handleEdit;
 window.handleDelete = handleDelete;
+window.startReply = startReply;
+window.cancelReply = cancelReply;
 
 /**
  * 페이지 로드 초기화

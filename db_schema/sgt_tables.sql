@@ -97,8 +97,23 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 
 -- =========================================================================================
+-- 6. 대댓글 기능을 위한 parent_id 컬럼 추가 마이그레이션
+-- ------------------------------------------------------------------------------------------
+-- 이 스크립트는 기존 sgt_comments 테이블에 parent_id 컬럼을 추가합니다.
+-- 이미 테이블이 존재하는 경우 아래 ALTER TABLE 구문만 실행하세요.
+-- =========================================================================================
+
+-- parent_id 컬럼 추가 (NULL이면 원댓글, 값이 있으면 대댓글)
+ALTER TABLE sgt_comments ADD COLUMN IF NOT EXISTS parent_id INT REFERENCES sgt_comments(id) ON DELETE CASCADE;
+
+-- 성능을 위한 인덱스 생성
+CREATE INDEX IF NOT EXISTS idx_sgt_comments_parent_id ON sgt_comments(parent_id);
+
+
+-- =========================================================================================
 -- 설치 완료 확인
 -- =========================================================================================
 -- 아래 쿼리로 테이블이 정상 생성되었는지 확인하세요:
 -- SELECT * FROM sgt_vote_counts;
 -- SELECT * FROM sgt_comments LIMIT 5;
+-- SELECT column_name FROM information_schema.columns WHERE table_name = 'sgt_comments';
