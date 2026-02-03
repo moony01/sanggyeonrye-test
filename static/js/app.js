@@ -65,7 +65,7 @@ function fnLoadDynamicAd(containerId, adSlot, adFormat) {
         console.log('AdSense error:', e);
       }
     });
-  }, 100);
+  }, 300); // 300ms 지연으로 모달 transition 완료 대기
 }
 
 // 다국어 결과 메시지 (6개 언어 지원)
@@ -493,6 +493,13 @@ function completeAnalysis() {
   setTimeout(function () {
     $("#loading").hide();
     $("#result-area").show();
+
+    // 결과 화면 광고 로드
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.log("AdSense error:", e);
+    }
   }, 500);
 }
 
