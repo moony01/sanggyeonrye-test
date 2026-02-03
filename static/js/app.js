@@ -25,6 +25,49 @@ var currentResultExplain = ""; // 해시태그 설명
 var currentResultCeleb = ""; // 닮은 연예인
 var currentPredictions = []; // T1.10: AI 예측 결과 배열 (퍼센트 바 차트용)
 
+/**
+ * 동적 광고 로드 함수
+ * 숨겨진 모달에서 광고가 로드되지 않는 문제 해결
+ * @param {string} containerId - 광고를 넣을 컨테이너 ID
+ * @param {string} adSlot - AdSense 슬롯 ID
+ * @param {string} adFormat - 광고 포맷 (auto, rectangle 등)
+ */
+function fnLoadDynamicAd(containerId, adSlot, adFormat) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+
+  // 모달이 완전히 렌더링된 후 광고 로드 (레이아웃 계산 대기)
+  setTimeout(function() {
+    // 기존 광고 제거
+    container.innerHTML = '';
+
+    // 컨테이너에 명시적 width 설정 (AdSense가 크기 감지 가능하도록)
+    container.style.width = '100%';
+
+    // 새 광고 요소 생성
+    var ins = document.createElement('ins');
+    ins.className = 'adsbygoogle';
+    ins.style.display = 'block';
+    ins.style.width = '100%';
+    ins.style.minHeight = '100px';
+    ins.setAttribute('data-ad-client', 'ca-pub-8955182453510440');
+    ins.setAttribute('data-ad-slot', adSlot);
+    ins.setAttribute('data-ad-format', adFormat || 'auto');
+    ins.setAttribute('data-full-width-responsive', 'true');
+
+    container.appendChild(ins);
+
+    // 광고 로드 (추가 지연으로 레이아웃 확정 보장)
+    requestAnimationFrame(function() {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.log('AdSense error:', e);
+      }
+    });
+  }, 100);
+}
+
 // 다국어 결과 메시지 (6개 언어 지원)
 var RESULT_MESSAGES = {
   freepass: {
@@ -334,24 +377,123 @@ function fnChangeLang(lang) {
 }
 
 //파일 업로드
+var loadingStartTime = 0;
+var MIN_LOADING_DURATION = 10000; // 메인 로딩 최소 10초
+
 function readURL(input) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();
     reader.onload = function (e) {
       $(".image-upload-wrap").hide();
-      $("#loading").show();
-      $(".file-upload-image").attr("src", e.target.result);
       $(".file-upload-content").show();
-      $(".image-title").html(input.files[0].name);
+
+      // analyzing 스타일: 분석 이미지에 업로드 이미지 설정
+      $("#analyzing-image").attr("src", e.target.result);
+      $("#face-image").attr("src", e.target.result);
+      $("#loading").show();
+      $("#result-area").hide();
+
+      // AI 분석 중 광고 동적 로드
+      fnLoadDynamicAd('ad-loading-slot', '7822847481', 'auto');
+
+      // 로딩 시작 시간 기록
+      loadingStartTime = Date.now();
+
+      // 프로그레스 바 애니메이션 시작
+      startProgressAnimation();
+
+      // AI 모델 초기화 및 예측
+      init().then(function() {
+        predict();
+        // 최소 10초 보장 후 로딩 완료
+        var elapsed = Date.now() - loadingStartTime;
+        var remaining = Math.max(0, MIN_LOADING_DURATION - elapsed);
+        setTimeout(function() {
+          completeAnalysis();
+        }, remaining);
+      });
     };
     reader.readAsDataURL(input.files[0]);
-    init().then(() => {
-      predict();
-      $("#loading").hide();
-    });
   } else {
     removeUpload();
   }
+}
+
+// 분석 진행 팁 메시지
+var analysisTips = [
+  "프리패스상은 청순하고 호감가는 첫인상이 특징입니다",
+  "문전박대상은 시크하고 개성있는 매력이 특징입니다",
+  "첫인상은 3초 안에 결정된다고 합니다",
+  "눈매가 부드러우면 프리패스상 확률이 높아요",
+  "AI가 수만 명의 데이터를 학습했습니다"
+];
+
+var analysisSteps = [
+  "얼굴형 분석 중...",
+  "눈, 코, 입 비율 측정 중...",
+  "인상 특징 추출 중...",
+  "상견례 점수 계산 중..."
+];
+
+var currentProgress = 0;
+var progressInterval = null;
+
+// 프로그레스 바 애니메이션
+function startProgressAnimation() {
+  currentProgress = 0;
+  var stepIndex = 0;
+  var tipIndex = 0;
+
+  // 초기화
+  $("#progress-bar").css("width", "0%");
+  $("#progress-text").text("0%");
+  $("#step-text").text(analysisSteps[0]);
+  $("#tip-text").text(analysisTips[0]);
+
+  progressInterval = setInterval(function () {
+    currentProgress += Math.random() * 8 + 2; // 2~10씩 증가
+    if (currentProgress > 95) currentProgress = 95; // 95%에서 멈춤
+
+    $("#progress-bar").css("width", Math.round(currentProgress) + "%");
+    $("#progress-text").text(Math.round(currentProgress) + "%");
+
+    // 단계별 텍스트 변경
+    if (currentProgress > 25 && stepIndex < 1) {
+      stepIndex = 1;
+      $("#step-text").text(analysisSteps[1]);
+    } else if (currentProgress > 50 && stepIndex < 2) {
+      stepIndex = 2;
+      $("#step-text").text(analysisSteps[2]);
+    } else if (currentProgress > 75 && stepIndex < 3) {
+      stepIndex = 3;
+      $("#step-text").text(analysisSteps[3]);
+    }
+
+    // 팁 변경 (30%마다)
+    var newTipIndex = Math.floor(currentProgress / 30) % analysisTips.length;
+    if (newTipIndex !== tipIndex) {
+      tipIndex = newTipIndex;
+      $("#tip-text").text(analysisTips[tipIndex]);
+    }
+  }, 200);
+}
+
+// 분석 완료
+function completeAnalysis() {
+  if (progressInterval) {
+    clearInterval(progressInterval);
+    progressInterval = null;
+  }
+
+  // 100%로 완료
+  $("#progress-bar").css("width", "100%");
+  $("#progress-text").text("100%");
+  $("#step-text").text("분석 완료!");
+
+  setTimeout(function () {
+    $("#loading").hide();
+    $("#result-area").show();
+  }, 500);
 }
 
 //파일 삭제버튼
@@ -568,6 +710,228 @@ function fnClose() {
   document.querySelector(".modal").style.display = "none";
 }
 
+// 상세 분석 모달 표시
+function fnShowDetailModal() {
+  if (!currentResultTitle) {
+    alert(getAlertMessage("completeTestFirst"));
+    return;
+  }
+
+  // 모달 표시
+  var modal = document.getElementById("detail-modal");
+  modal.style.display = "block";
+
+  // 모달 스크롤을 맨 위로 리셋
+  modal.scrollTop = 0;
+  window.scrollTo(0, 0);
+
+  // 배경 스크롤 방지
+  document.body.style.overflow = "hidden";
+
+  // cross-site-nav 숨기기 (모달 위에 표시되는 것 방지)
+  var crossSiteNav = document.getElementById("crossSiteNav");
+  if (crossSiteNav) {
+    crossSiteNav.style.display = "none";
+  }
+
+  // 사용자 이미지 설정
+  var faceImage = document.getElementById("face-image");
+  if (faceImage && faceImage.src) {
+    document.getElementById("modal-scan-image").src = faceImage.src;
+  }
+
+  // 대기 화면 표시, 결과 숨김
+  document.getElementById("modal-ad-wait").style.display = "block";
+  document.getElementById("modal-detail-result").style.display = "none";
+
+  // 분석 중 광고 동적 로드
+  fnLoadDynamicAd('ad-analyzing-slot', '7822847481', 'auto');
+
+  // 모달 프로그레스 애니메이션 시작
+  startModalProgressAnimation();
+}
+
+// 상세 분석 모달 닫기
+function fnCloseDetailModal() {
+  document.getElementById("detail-modal").style.display = "none";
+
+  // 배경 스크롤 복원
+  document.body.style.overflow = "";
+
+  // cross-site-nav 다시 표시
+  var crossSiteNav = document.getElementById("crossSiteNav");
+  if (crossSiteNav) {
+    crossSiteNav.style.display = "";
+  }
+
+  if (modalProgressInterval) {
+    clearInterval(modalProgressInterval);
+    modalProgressInterval = null;
+  }
+}
+
+var modalProgressInterval = null;
+
+// 모달 프로그레스 애니메이션 (kpopface와 동일: 20초)
+function startModalProgressAnimation() {
+  var totalDuration = 20; // 총 20초
+  var elapsed = 0;
+  var steps = document.querySelectorAll(".analysis-step");
+  var stepTimes = [0, 5, 10, 15]; // 각 단계 시작 시간 (초)
+  var currentStep = 0;
+
+  // 초기화
+  document.getElementById("modal-progress-fill").style.width = "0%";
+  document.getElementById("modal-progress-text").textContent = "0%";
+  steps.forEach(function (step) {
+    step.classList.remove("active", "completed");
+    step.querySelector(".step-icon").textContent = "⏳";
+  });
+
+  // 첫 번째 단계 활성화
+  if (steps[0]) steps[0].classList.add("active");
+
+  modalProgressInterval = setInterval(function () {
+    elapsed++;
+    var progress = Math.min((elapsed / totalDuration) * 100, 100);
+
+    document.getElementById("modal-progress-fill").style.width = progress + "%";
+    document.getElementById("modal-progress-text").textContent = Math.round(progress) + "%";
+
+    // 단계 업데이트
+    for (var i = stepTimes.length - 1; i >= 0; i--) {
+      if (elapsed >= stepTimes[i] && currentStep < i + 1) {
+        // 이전 단계 완료 처리
+        if (currentStep > 0 && steps[currentStep - 1]) {
+          steps[currentStep - 1].classList.add("completed");
+          steps[currentStep - 1].classList.remove("active");
+          steps[currentStep - 1].querySelector(".step-icon").textContent = "✅";
+        }
+        currentStep = i + 1;
+        if (steps[currentStep - 1]) {
+          steps[currentStep - 1].classList.add("active");
+        }
+        break;
+      }
+    }
+
+    // 완료
+    if (elapsed >= totalDuration) {
+      // 마지막 단계 완료 처리
+      steps.forEach(function (step) {
+        step.classList.add("completed");
+        step.classList.remove("active");
+        step.querySelector(".step-icon").textContent = "✅";
+      });
+
+      clearInterval(modalProgressInterval);
+      modalProgressInterval = null;
+
+      // 결과 표시
+      setTimeout(function () {
+        showModalDetailResult();
+      }, 500);
+    }
+  }, 1000); // 1초마다 실행
+}
+
+// 모달 상세 결과 표시
+function showModalDetailResult() {
+  document.getElementById("modal-ad-wait").style.display = "none";
+  document.getElementById("modal-detail-result").style.display = "block";
+
+  // 상세 결과 광고 동적 로드
+  fnLoadDynamicAd('ad-detail-slot', '3138863990', 'auto');
+
+  // 결과 요약 설정
+  document.getElementById("modal-result-title").textContent = currentResultTitle;
+  document.getElementById("modal-result-hashtag").textContent = currentResultExplain;
+  document.getElementById("modal-result-celeb").textContent = currentResultCeleb;
+
+  // 순위 리스트 생성
+  var rankingList = document.getElementById("modal-ranking-list");
+  rankingList.innerHTML = "";
+
+  if (currentPredictions && currentPredictions.length > 0) {
+    currentPredictions.forEach(function (pred) {
+      var barClass = getBarClass(pred.agency);
+      var labelText = getLabelText(barClass) || pred.agency;
+
+      var itemHtml =
+        '<div class="agency-rank-item">' +
+        '<div class="agency-rank-label">' + labelText + "</div>" +
+        '<div class="agency-rank-bar-container">' +
+        '<div class="agency-rank-bar ' + barClass + '" style="width: ' + pred.percent + '%;"></div>' +
+        "</div>" +
+        '<div class="agency-rank-percent">' + pred.percent + "%</div>" +
+        "</div>";
+      rankingList.innerHTML += itemHtml;
+    });
+  }
+
+  // 비주얼 리포트 생성
+  generateVisualReport();
+}
+
+// 바 클래스 결정
+function getBarClass(className) {
+  if (className === "freepass" || className === "프리패스상" || className === "상견례 프리패스상") {
+    return "freepass";
+  } else if (className === "reject" || className === "문전박대상" || className === "상견례 문전박대상") {
+    return "reject";
+  }
+  return className;
+}
+
+// 비주얼 리포트 생성
+function generateVisualReport() {
+  var reportContainer = document.getElementById("modal-visual-report");
+  var isMale = document.getElementById("gender").checked;
+  var resultType = getBarClass(currentAgency);
+
+  var reportHtml = '<div class="visual-report">' +
+    '<div class="report-title">🔍 AI 비주얼 리포트</div>';
+
+  if (resultType === "freepass") {
+    reportHtml += '<div class="report-section">' +
+      '<div class="section-title">인상 분석</div>' +
+      '<p class="section-text">당신은 부드럽고 호감가는 인상을 가지고 있습니다. 첫인상에서 신뢰감과 친근함을 주는 타입입니다.</p>' +
+      '</div>' +
+      '<div class="report-section">' +
+      '<div class="section-title">특징</div>' +
+      '<ul class="section-list">' +
+      '<li>부드러운 눈매와 자연스러운 미소</li>' +
+      '<li>균형 잡힌 이목구비</li>' +
+      '<li>청순하고 깔끔한 이미지</li>' +
+      '</ul>' +
+      '</div>' +
+      '<div class="report-section">' +
+      '<div class="section-title">상견례 예상</div>' +
+      '<p class="section-text">부모님께 좋은 첫인상을 줄 확률이 높습니다. 예의바르고 착해보이는 인상으로 긍정적인 평가를 받을 것입니다.</p>' +
+      '</div>';
+  } else {
+    reportHtml += '<div class="report-section">' +
+      '<div class="section-title">인상 분석</div>' +
+      '<p class="section-text">당신은 개성있고 시크한 인상을 가지고 있습니다. 첫인상은 강렬하지만 알고 보면 매력이 넘치는 타입입니다.</p>' +
+      '</div>' +
+      '<div class="report-section">' +
+      '<div class="section-title">특징</div>' +
+      '<ul class="section-list">' +
+      '<li>또렷하고 강렬한 눈매</li>' +
+      '<li>개성있는 이목구비</li>' +
+      '<li>시크하고 세련된 이미지</li>' +
+      '</ul>' +
+      '</div>' +
+      '<div class="report-section">' +
+      '<div class="section-title">상견례 예상</div>' +
+      '<p class="section-text">첫인상은 다소 쎄보일 수 있지만, 대화를 나누다 보면 숨은 매력이 드러납니다. 진정성 있는 태도가 중요합니다.</p>' +
+      '</div>';
+  }
+
+  reportHtml += '</div>';
+  reportContainer.innerHTML = reportHtml;
+}
+
 //앱 다운로드 페이지 이동
 function fnAppDownloadPage(app) {
   if (app == "android") {
@@ -689,6 +1053,11 @@ async function predict() {
     resultCeleb +
     "</div>";
   $(".result-messege").html(title + explain + celeb);
+
+  // 새 UI: 결과 타이틀과 퍼센트 업데이트
+  var topPercent = Math.round(prediction[0].probability * 100);
+  $("#result-title").text(resultTitle).removeClass("freepass reject").addClass(resultClass);
+  $("#result-percent").text(topPercent + "%").removeClass("freepass reject").addClass(resultClass);
 
   // T1.2: 결과 이미지 저장/공유를 위한 전역 변수 설정
   currentAgency = prediction[0].className;

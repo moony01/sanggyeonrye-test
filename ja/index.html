@@ -46,7 +46,6 @@ lang: ja
     </div>
   </div>
   <div class="file-upload">
-    <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
     <div class="image-upload-wrap">
       <input
         class="file-upload-input"
@@ -61,23 +60,58 @@ lang: ja
       </div>
     </div>
     <div class="file-upload-content">
-      <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-      <div id="loading" class="animated bounce">
-        <!-- <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div> -->
-        <i class="fas fa-circle-notch fa-spin"></i>
-        <p class="text-center">AIがあなたの第一印象を分析しています。</p>
+      <!-- ローディング画面 (analyzing style) -->
+      <div id="loading" class="analyzing-container" style="display: none;">
+        <h2 class="analyzing-title">
+          <i class="fas fa-search"></i> AIが分析中...
+        </h2>
+        <div class="analyzing-image-wrap">
+          <img id="analyzing-image" src="../static/img/icon.png" alt="分析中">
+          <div class="progress-overlay">
+            <span id="progress-text">0%</span>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <p class="step-text" id="step-text">顔の形を分析中...</p>
+        <div class="tip-box">
+          <div class="tip-box-title">💡 ご存知ですか？</div>
+          <div class="tip-box-text" id="tip-text">フリーパス相は清純で好感度の高い第一印象が特徴です</div>
+        </div>
+        <!-- AI分析中広告スロット -->
+        <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
       </div>
-      <p class="result-messege"></p>
-      <div id="label-container"></div>
-      <!-- 結果画像を保存 Button -->
-      <button
-        type="button"
-        id="save-image-btn"
-        class="save-image-btn"
-        onclick="fnSaveResultImage()"
-      >
+
+      <!-- 結果表示エリア -->
+      <div id="result-area" style="display: none;">
+        <div class="result-image-wrap">
+          <img id="face-image" src="#" alt="your image" />
+        </div>
+        <p class="result-title" id="result-title"></p>
+        <p class="result-percent" id="result-percent"></p>
+        <div id="label-container" style="display: none;"></div>
+
+        <div id="detail-cta-wrap" class="detail-cta-wrap">
+          <p class="detail-cta-text">📊 詳細分析を見たいですか？</p>
+          <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main" onclick="fnShowDetailModal()">
+            <i class="fas fa-chart-bar"></i>
+            <span>詳細を見る</span>
+          </button>
+        </div>
+
+        <!-- 結果広告スロット -->
+        <div class="result-ad-slot">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-8955182453510440"
+               data-ad-slot="3138863990"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+        </div>
+      </div>
+
+      <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
         <i class="fas fa-camera"></i>
         <span class="save-image-text">結果画像を保存</span>
       </button>
@@ -88,6 +122,61 @@ lang: ja
       </div>
 
       {% include buy_me_a_coffee.html %} {% include sns_promotion.html %}
+    </div>
+  </div>
+
+  <!-- 詳細分析モーダル -->
+  <div id="detail-modal" class="ad-overlay" style="display: none;">
+    <div class="ad-overlay-content detail-modal-content">
+      <button type="button" class="modal-close-top" onclick="fnCloseDetailModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <div id="modal-ad-wait">
+        <div class="ad-overlay-title">📊 分析中...</div>
+        <div class="modal-scan-area">
+          <div class="modal-scan-image-wrap">
+            <img id="modal-scan-image" src="../static/img/icon.png" alt="分析中">
+            <div class="scan-line"></div>
+          </div>
+        </div>
+        <div class="modal-analysis-steps">
+          <div class="analysis-step" id="step-1"><span class="step-icon">⏳</span><span class="step-text">顔の形を分析中...</span></div>
+          <div class="analysis-step" id="step-2"><span class="step-icon">⏳</span><span class="step-text">特徴を抽出中...</span></div>
+          <div class="analysis-step" id="step-3"><span class="step-icon">⏳</span><span class="step-text">スコアを計算中...</span></div>
+          <div class="analysis-step" id="step-4"><span class="step-icon">⏳</span><span class="step-text">レポートを作成中...</span></div>
+        </div>
+        <div class="modal-progress-wrap">
+          <div class="modal-progress-bar"><div class="modal-progress-fill" id="modal-progress-fill"></div></div>
+          <span class="modal-progress-text" id="modal-progress-text">0%</span>
+        </div>
+        <div class="modal-tip-box">
+          <span class="modal-tip-icon">💡</span>
+          <span class="modal-tip-text" id="modal-tip-text">フリーパス相は好感度の高い外見が特徴です</span>
+        </div>
+
+        <!-- 広告スロット（動的ロード）-->
+        <div id="ad-analyzing-slot" class="ad-overlay-slot" style="margin-top: 16px; min-height: 100px;"></div>
+      </div>
+      <div id="modal-detail-result" style="display: none;">
+        <div class="ad-overlay-title">📊 詳細分析結果</div>
+        <div class="modal-result-summary">
+          <p class="modal-result-title" id="modal-result-title"></p>
+          <p class="modal-result-hashtag" id="modal-result-hashtag"></p>
+          <p class="modal-result-celeb" id="modal-result-celeb"></p>
+        </div>
+        <div class="agency-ranking" style="margin: 16px 0; text-align: left;">
+          <div class="agency-ranking-title">全体結果</div>
+          <div id="modal-ranking-list"></div>
+        </div>
+
+        <!-- 広告（動的ロード）-->
+        <div id="ad-detail-slot" class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;"></div>
+
+        <div id="modal-visual-report" style="text-align: left;"></div>
+        <button type="button" class="detail-cta-btn" onclick="fnCloseDetailModal()" style="margin-top: 20px;">
+          <i class="fas fa-times"></i> 閉じる
+        </button>
+      </div>
     </div>
   </div>
 

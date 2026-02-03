@@ -885,3 +885,772 @@
 
 @media screen and (min-width: 270px) and (max-width: 330px) {
 }
+
+/* ========================================
+   분석 로딩 UI (kpopface 스타일)
+   ======================================== */
+
+.analyzing-container {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.analyzing-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.analyzing-title i {
+  margin-right: 8px;
+  color: #d4a5a5;
+}
+
+/* 사용자 이미지 + 프로그레스 */
+.analyzing-image-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #d4a5a5;
+}
+
+.analyzing-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.progress-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(212, 165, 165, 0.9);
+  padding: 8px;
+  color: white;
+  font-weight: bold;
+}
+
+/* 프로그레스 바 */
+.progress-bar-container {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 16px;
+  background: #e0e0e0;
+  border-radius: 20px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #d4a5a5, #f8bbd9);
+  border-radius: 20px;
+  width: 0%;
+  transition: width 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-text {
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* 분석 단계 텍스트 */
+.step-text {
+  font-size: 16px;
+  color: #666;
+  margin: 16px 0;
+  min-height: 24px;
+}
+
+/* 팁 박스 */
+.tip-box {
+  background: rgba(212, 165, 165, 0.08);
+  border: none;
+  padding: 12px 16px;
+  margin: 8px 0 0 0;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.tip-box-title {
+  font-weight: bold;
+  color: #d4a5a5;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.tip-box-text {
+  color: #666;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ========================================
+   결과 영역 (kpopface 스타일)
+   ======================================== */
+
+.result-image-wrap {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #d4a5a5;
+  box-shadow: 0 4px 12px rgba(212, 165, 165, 0.3);
+}
+
+.result-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.result-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin: 12px 0 8px;
+  text-align: center;
+}
+
+.result-percent {
+  font-size: 48px;
+  font-weight: bold;
+  color: #d4a5a5;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+/* 결과 타입별 색상 */
+.result-title.freepass {
+  background: linear-gradient(135deg, #ff6b9d 0%, #ff8a80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.result-title.reject {
+  background: linear-gradient(135deg, #9c27b0 0%, #7c4dff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.result-percent.freepass {
+  color: #ff6b9d;
+}
+
+.result-percent.reject {
+  color: #7c4dff;
+}
+
+/* ========================================
+   상세 분석 보기 CTA
+   ======================================== */
+.detail-cta-wrap {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border: 2px dashed #d4a5a5;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.detail-cta-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.detail-cta-btn-main {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #d4a5a5, #f8bbd9);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.detail-cta-btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 165, 165, 0.4);
+}
+
+.detail-cta-btn-main i {
+  font-size: 18px;
+}
+
+.detail-cta-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #d4a5a5, #f8bbd9);
+  color: white;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.detail-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 165, 165, 0.4);
+}
+
+/* ========================================
+   광고 오버레이 (모달)
+   ======================================== */
+
+.ad-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  z-index: 9999;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ad-overlay-content {
+  position: relative;
+  margin: 20px auto;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 350px;
+  width: 90%;
+  z-index: 10000;
+}
+
+.ad-overlay-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.detail-modal-content {
+  position: relative;
+  max-width: 400px;
+}
+
+/* 상단 닫기 버튼 */
+.modal-close-top {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #666;
+  transition: background 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.modal-close-top:hover {
+  background: rgba(0, 0, 0, 0.2);
+  color: #333;
+}
+
+/* 미니 프로필 스캔 영역 */
+.modal-scan-area {
+  margin: 16px 0;
+}
+
+.modal-scan-image-wrap {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #d4a5a5;
+  position: relative;
+}
+
+.modal-scan-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 스캔 라인 애니메이션 */
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #d4a5a5, transparent);
+  animation: scanMove 2s ease-in-out infinite;
+}
+
+@keyframes scanMove {
+  0% { top: 0; }
+  50% { top: calc(100% - 3px); }
+  100% { top: 0; }
+}
+
+/* 분석 단계 표시 */
+.modal-analysis-steps {
+  text-align: left;
+  padding: 12px 16px;
+  background: rgba(212, 165, 165, 0.05);
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.analysis-step {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+  color: #888;
+  transition: all 0.3s ease;
+}
+
+.analysis-step.active {
+  color: #d4a5a5;
+  font-weight: 500;
+}
+
+.analysis-step.completed {
+  color: #27ae60;
+}
+
+.analysis-step .step-icon {
+  width: 20px;
+  margin-right: 8px;
+  text-align: center;
+}
+
+.analysis-step .step-text {
+  flex: 1;
+  margin: 0;
+  min-height: auto;
+}
+
+/* 프로그레스 바 */
+.modal-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.modal-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.modal-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #d4a5a5, #f8bbd9);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.modal-progress-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d4a5a5;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* 팁 박스 */
+.modal-tip-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(212, 165, 165, 0.08);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #666;
+  text-align: left;
+}
+
+.modal-tip-icon {
+  flex-shrink: 0;
+}
+
+.modal-tip-text {
+  line-height: 1.4;
+}
+
+/* 결과 요약 */
+.modal-result-summary {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.modal-result-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 8px;
+}
+
+.modal-result-hashtag {
+  font-size: 14px;
+  color: #d4a5a5;
+  margin: 0 0 8px;
+}
+
+.modal-result-celeb {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* 전체 순위 */
+.agency-ranking {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.agency-ranking-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.agency-rank-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.agency-rank-label {
+  width: 70px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.agency-rank-bar-container {
+  flex: 1;
+  height: 24px;
+  background: #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 12px;
+}
+
+.agency-rank-bar {
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.5s ease;
+}
+
+.agency-rank-bar.freepass {
+  background: linear-gradient(90deg, #ff6b9d, #ff8a80);
+}
+
+.agency-rank-bar.reject {
+  background: linear-gradient(90deg, #9c27b0, #7c4dff);
+}
+
+.agency-rank-percent {
+  width: 50px;
+  text-align: right;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* 비주얼 리포트 */
+.visual-report {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.report-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #d4a5a5;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #d4a5a5;
+}
+
+.report-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  padding-left: 12px;
+  border-left: 3px solid #d4a5a5;
+}
+
+.section-text {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+}
+
+.section-list {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.section-list li {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 4px;
+}
+
+/* ========================================
+   모바일 반응형 스타일
+   ======================================== */
+
+@media screen and (max-width: 480px) {
+  .ad-overlay {
+    padding: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* 스크롤바 숨기기 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE, Edge */
+  }
+
+  .ad-overlay::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .ad-overlay-content,
+  .ad-overlay-content.detail-modal-content {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 0;
+    padding: 16px;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    overflow-y: visible;
+    box-sizing: border-box;
+  }
+
+  .ad-overlay-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .agency-ranking {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .agency-ranking-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .agency-rank-label {
+    width: 60px;
+    font-size: 12px;
+  }
+
+  .agency-rank-bar-container {
+    height: 20px;
+    margin: 0 8px;
+  }
+
+  .agency-rank-percent {
+    width: 40px;
+    font-size: 12px;
+  }
+
+  .detail-modal-content {
+    max-width: none;
+    width: 100%;
+    min-height: auto;
+    border-radius: 0;
+  }
+
+  /* 모바일에서 닫기 버튼 위치 고정 */
+  .modal-close-top {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 10001;
+  }
+
+  .modal-result-summary {
+    padding: 12px;
+  }
+
+  .modal-result-title {
+    font-size: 20px;
+  }
+
+  .modal-scan-image-wrap {
+    width: 80px;
+    height: 80px;
+  }
+
+  .result-image-wrap {
+    width: 150px;
+    height: 150px;
+  }
+
+  .result-title {
+    font-size: 24px;
+  }
+
+  .result-percent {
+    font-size: 40px;
+  }
+
+  .analyzing-image-wrap {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+/* ========================================
+   광고 슬롯 스타일
+   ======================================== */
+
+.ad-overlay-slot {
+  width: 100%;
+  min-width: 280px;
+  min-height: 250px;
+  background: #f5f5f5;
+  margin: 16px 0;
+  border-radius: 8px;
+  display: block;
+  color: #999;
+  box-sizing: border-box;
+}
+
+.result-ad-slot {
+  width: 100%;
+  min-height: 100px;
+  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 모바일에서 광고 슬롯 min-width 제거 */
+@media screen and (max-width: 480px) {
+  .ad-overlay-slot {
+    min-width: unset;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* ========================================
+   매우 작은 화면 (380px 이하)
+   ======================================== */
+@media (max-width: 380px) {
+  .ad-overlay-content {
+    padding: 12px;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .detail-modal-content {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .modal-result-summary {
+    padding: 10px;
+  }
+
+  .modal-result-title {
+    font-size: 18px;
+  }
+
+  .modal-result-hashtag {
+    font-size: 11px;
+  }
+
+  .modal-result-celeb {
+    font-size: 11px;
+  }
+
+  .modal-scan-image-wrap {
+    width: 70px;
+    height: 70px;
+  }
+
+  .modal-analysis-steps .step-text {
+    font-size: 11px;
+  }
+
+  .agency-rank-label {
+    width: 55px;
+    font-size: 11px;
+  }
+
+  .agency-rank-percent {
+    width: 35px;
+    font-size: 11px;
+  }
+
+  .visual-report .section-title {
+    font-size: 13px;
+  }
+
+  .visual-report .section-text,
+  .visual-report .section-list li {
+    font-size: 12px;
+  }
+}

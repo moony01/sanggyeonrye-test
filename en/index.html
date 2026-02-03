@@ -49,7 +49,6 @@ lang: en
     </div>
   </div>
   <div class="file-upload">
-    <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )"></button>-->
     <div class="image-upload-wrap">
       <input
         class="file-upload-input"
@@ -64,23 +63,58 @@ lang: en
       </div>
     </div>
     <div class="file-upload-content">
-      <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-      <div id="loading" class="animated bounce">
-        <!-- <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div> -->
-        <i class="fas fa-circle-notch fa-spin"></i>
-        <p class="text-center">AI is analyzing your first impression.</p>
+      <!-- Loading Screen (analyzing style) -->
+      <div id="loading" class="analyzing-container" style="display: none;">
+        <h2 class="analyzing-title">
+          <i class="fas fa-search"></i> AI is analyzing...
+        </h2>
+        <div class="analyzing-image-wrap">
+          <img id="analyzing-image" src="../static/img/icon.png" alt="Analyzing">
+          <div class="progress-overlay">
+            <span id="progress-text">0%</span>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <p class="step-text" id="step-text">Analyzing face shape...</p>
+        <div class="tip-box">
+          <div class="tip-box-title">💡 Did you know?</div>
+          <div class="tip-box-text" id="tip-text">Free Pass types have a friendly and approachable first impression</div>
+        </div>
+        <!-- AI analyzing ad slot -->
+        <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
       </div>
-      <p class="result-messege"></p>
-      <div id="label-container"></div>
-      <!-- Save Result Image Button -->
-      <button
-        type="button"
-        id="save-image-btn"
-        class="save-image-btn"
-        onclick="fnSaveResultImage()"
-      >
+
+      <!-- Result Area -->
+      <div id="result-area" style="display: none;">
+        <div class="result-image-wrap">
+          <img id="face-image" src="#" alt="your image" />
+        </div>
+        <p class="result-title" id="result-title"></p>
+        <p class="result-percent" id="result-percent"></p>
+        <div id="label-container" style="display: none;"></div>
+
+        <div id="detail-cta-wrap" class="detail-cta-wrap">
+          <p class="detail-cta-text">📊 Want to see the full analysis?</p>
+          <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main" onclick="fnShowDetailModal()">
+            <i class="fas fa-chart-bar"></i>
+            <span>View Details</span>
+          </button>
+        </div>
+
+        <!-- Result ad slot -->
+        <div class="result-ad-slot">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-8955182453510440"
+               data-ad-slot="3138863990"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+        </div>
+      </div>
+
+      <button type="button" id="save-image-btn" class="save-image-btn" onclick="fnSaveResultImage()">
         <i class="fas fa-camera"></i>
         <span class="save-image-text">Save Result Image</span>
       </button>
@@ -91,6 +125,61 @@ lang: en
       </div>
 
       {% include buy_me_a_coffee.html %} {% include sns_promotion.html %}
+    </div>
+  </div>
+
+  <!-- Detail Analysis Modal -->
+  <div id="detail-modal" class="ad-overlay" style="display: none;">
+    <div class="ad-overlay-content detail-modal-content">
+      <button type="button" class="modal-close-top" onclick="fnCloseDetailModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <div id="modal-ad-wait">
+        <div class="ad-overlay-title">📊 Analyzing...</div>
+        <div class="modal-scan-area">
+          <div class="modal-scan-image-wrap">
+            <img id="modal-scan-image" src="../static/img/icon.png" alt="Analyzing">
+            <div class="scan-line"></div>
+          </div>
+        </div>
+        <div class="modal-analysis-steps">
+          <div class="analysis-step" id="step-1"><span class="step-icon">⏳</span><span class="step-text">Analyzing face shape...</span></div>
+          <div class="analysis-step" id="step-2"><span class="step-icon">⏳</span><span class="step-text">Extracting features...</span></div>
+          <div class="analysis-step" id="step-3"><span class="step-icon">⏳</span><span class="step-text">Calculating score...</span></div>
+          <div class="analysis-step" id="step-4"><span class="step-icon">⏳</span><span class="step-text">Generating report...</span></div>
+        </div>
+        <div class="modal-progress-wrap">
+          <div class="modal-progress-bar"><div class="modal-progress-fill" id="modal-progress-fill"></div></div>
+          <span class="modal-progress-text" id="modal-progress-text">0%</span>
+        </div>
+        <div class="modal-tip-box">
+          <span class="modal-tip-icon">💡</span>
+          <span class="modal-tip-text" id="modal-tip-text">Free Pass types are known for their friendly appearance</span>
+        </div>
+
+        <!-- Ad slot (dynamic load) -->
+        <div id="ad-analyzing-slot" class="ad-overlay-slot" style="margin-top: 16px; min-height: 100px;"></div>
+      </div>
+      <div id="modal-detail-result" style="display: none;">
+        <div class="ad-overlay-title">📊 Detailed Analysis</div>
+        <div class="modal-result-summary">
+          <p class="modal-result-title" id="modal-result-title"></p>
+          <p class="modal-result-hashtag" id="modal-result-hashtag"></p>
+          <p class="modal-result-celeb" id="modal-result-celeb"></p>
+        </div>
+        <div class="agency-ranking" style="margin: 16px 0; text-align: left;">
+          <div class="agency-ranking-title">Result Breakdown</div>
+          <div id="modal-ranking-list"></div>
+        </div>
+
+        <!-- Ad (dynamic load) -->
+        <div id="ad-detail-slot" class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;"></div>
+
+        <div id="modal-visual-report" style="text-align: left;"></div>
+        <button type="button" class="detail-cta-btn" onclick="fnCloseDetailModal()" style="margin-top: 20px;">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
     </div>
   </div>
 

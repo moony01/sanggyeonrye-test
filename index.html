@@ -54,18 +54,63 @@ lang: ko
       </div>
     </div>
     <div class="file-upload-content">
-      <img class="file-upload-image" id="face-image" src="#" alt="your image" />
-      <div id="loading" class="animated bounce">
-        <!-- <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div> -->
-        <i class="fas fa-circle-notch fa-spin"></i>
-        <p class="text-center">
-          AI가 당신의 상견례 얼굴상을 분석중입니다...
-        </p>
+      <!-- 로딩 화면 (analyzing 스타일) -->
+      <div id="loading" class="analyzing-container" style="display: none;">
+        <h2 class="analyzing-title">
+          <i class="fas fa-search"></i> AI가 분석 중...
+        </h2>
+        <div class="analyzing-image-wrap">
+          <img id="analyzing-image" src="static/img/icon.png" alt="분석 중인 이미지">
+          <div class="progress-overlay">
+            <span id="progress-text">0%</span>
+          </div>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <p class="step-text" id="step-text">얼굴형 분석 중...</p>
+        <div class="tip-box">
+          <div class="tip-box-title">💡 알고 계셨나요?</div>
+          <div class="tip-box-text" id="tip-text">프리패스상은 청순하고 호감가는 첫인상이 특징입니다</div>
+        </div>
+        <!-- AI 분석 중 광고 슬롯 -->
+        <div id="ad-loading-slot" style="margin-top: 20px; min-height: 100px;"></div>
       </div>
-      <p class="result-messege"></p>
-      <div id="label-container"></div>
+
+      <!-- 결과 표시 영역 (1차 결과: 원형 이미지 + 1위 결과) -->
+      <div id="result-area" style="display: none;">
+        <!-- 원형 이미지 (analyzing 스타일) -->
+        <div class="result-image-wrap">
+          <img id="face-image" src="#" alt="your image" />
+        </div>
+
+        <!-- 1위 결과만 표시 -->
+        <p class="result-title" id="result-title"></p>
+        <p class="result-percent" id="result-percent"></p>
+
+        <!-- 숨겨진 label-container (init 함수용) -->
+        <div id="label-container" style="display: none;"></div>
+
+        <!-- 상세 분석 보기 버튼 -->
+        <div id="detail-cta-wrap" class="detail-cta-wrap">
+          <p class="detail-cta-text">📊 전체 결과 + 상세 분석이 궁금하다면?</p>
+          <button type="button" id="detail-analysis-btn" class="detail-cta-btn-main" onclick="fnShowDetailModal()">
+            <i class="fas fa-chart-bar"></i>
+            <span>상세 분석 보기</span>
+          </button>
+        </div>
+
+        <!-- 결과 화면 광고 슬롯 -->
+        <div class="result-ad-slot">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-8955182453510440"
+               data-ad-slot="3138863990"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+        </div>
+      </div>
+
       <!-- 결과 이미지 저장 버튼 -->
       <button
         type="button"
@@ -83,6 +128,94 @@ lang: ko
       </div>
 
       {% include buy_me_a_coffee.html %} {% include sns_promotion.html %}
+    </div>
+  </div>
+
+  <!-- 상세 분석 팝업 모달 -->
+  <div id="detail-modal" class="ad-overlay" style="display: none;">
+    <div class="ad-overlay-content detail-modal-content">
+      <!-- 상단 닫기 버튼 -->
+      <button type="button" class="modal-close-top" onclick="fnCloseDetailModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <!-- 광고 대기 화면 (복합형 로딩 UI) -->
+      <div id="modal-ad-wait">
+        <div class="ad-overlay-title">📊 비주얼 분석 중...</div>
+
+        <!-- 미니 프로필 스캔 영역 -->
+        <div class="modal-scan-area">
+          <div class="modal-scan-image-wrap">
+            <img id="modal-scan-image" src="static/img/icon.png" alt="분석 중">
+            <div class="scan-line"></div>
+          </div>
+        </div>
+
+        <!-- 분석 단계 표시 -->
+        <div class="modal-analysis-steps">
+          <div class="analysis-step" id="step-1">
+            <span class="step-icon">⏳</span>
+            <span class="step-text">얼굴형 분석 중...</span>
+          </div>
+          <div class="analysis-step" id="step-2">
+            <span class="step-icon">⏳</span>
+            <span class="step-text">인상 특징 추출 중...</span>
+          </div>
+          <div class="analysis-step" id="step-3">
+            <span class="step-icon">⏳</span>
+            <span class="step-text">상견례 점수 계산 중...</span>
+          </div>
+          <div class="analysis-step" id="step-4">
+            <span class="step-icon">⏳</span>
+            <span class="step-text">AI 리포트 생성 중...</span>
+          </div>
+        </div>
+
+        <!-- 프로그레스 바 -->
+        <div class="modal-progress-wrap">
+          <div class="modal-progress-bar">
+            <div class="modal-progress-fill" id="modal-progress-fill"></div>
+          </div>
+          <span class="modal-progress-text" id="modal-progress-text">0%</span>
+        </div>
+
+        <!-- 팁 박스 -->
+        <div class="modal-tip-box">
+          <span class="modal-tip-icon">💡</span>
+          <span class="modal-tip-text" id="modal-tip-text">프리패스상은 청순하고 호감가는 첫인상이 특징입니다</span>
+        </div>
+
+        <!-- 광고 슬롯 (동적 로드) -->
+        <div id="ad-analyzing-slot" class="ad-overlay-slot" style="margin-top: 16px; min-height: 100px;"></div>
+      </div>
+
+      <!-- 상세 분석 결과 -->
+      <div id="modal-detail-result" style="display: none;">
+        <div class="ad-overlay-title">📊 상세 분석 결과</div>
+
+        <!-- 결과 요약 (상견례 결과, 해시태그, 연예인) -->
+        <div class="modal-result-summary">
+          <p class="modal-result-title" id="modal-result-title"></p>
+          <p class="modal-result-hashtag" id="modal-result-hashtag"></p>
+          <p class="modal-result-celeb" id="modal-result-celeb"></p>
+        </div>
+
+        <!-- 전체 결과 순위 -->
+        <div class="agency-ranking" style="margin: 16px 0; text-align: left;">
+          <div class="agency-ranking-title">전체 결과 비율</div>
+          <div id="modal-ranking-list"></div>
+        </div>
+
+        <!-- 광고 (동적 로드) -->
+        <div id="ad-detail-slot" class="ad-overlay-slot" style="min-height: 100px; margin: 16px 0;"></div>
+
+        <!-- 비주얼 리포트 -->
+        <div id="modal-visual-report" style="text-align: left;"></div>
+
+        <!-- 닫기 버튼 -->
+        <button type="button" class="detail-cta-btn" onclick="fnCloseDetailModal()" style="margin-top: 20px;">
+          <i class="fas fa-times"></i> 닫기
+        </button>
+      </div>
     </div>
   </div>
   {% include comment_section_ko.html %}
