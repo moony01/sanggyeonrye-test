@@ -718,6 +718,8 @@ function fnClose() {
 }
 
 // 상세 분석 모달 표시
+var savedScrollY = 0;
+
 function fnShowDetailModal() {
   if (!currentResultTitle) {
     alert(getAlertMessage("completeTestFirst"));
@@ -726,13 +728,19 @@ function fnShowDetailModal() {
 
   // 모달 표시
   var modal = document.getElementById("detail-modal");
+
+  // .site-pusher의 transform이 position:fixed를 방해하므로 body로 이동
+  if (modal.parentElement !== document.body) {
+    document.body.appendChild(modal);
+  }
+
   modal.style.display = "block";
 
   // 모달 스크롤을 맨 위로 리셋
   modal.scrollTop = 0;
-  window.scrollTo(0, 0);
 
-  // 배경 스크롤 방지
+  // 배경 스크롤 방지 (iOS 대응)
+  savedScrollY = window.scrollY || window.pageYOffset;
   document.body.style.overflow = "hidden";
 
   // cross-site-nav 숨기기 (모달 위에 표시되는 것 방지)

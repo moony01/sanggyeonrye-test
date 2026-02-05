@@ -1457,8 +1457,9 @@
 @media screen and (max-width: 480px) {
   .ad-overlay {
     padding: 0;
-    overflow-y: auto;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     /* 스크롤바 숨기기 */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE, Edge */
