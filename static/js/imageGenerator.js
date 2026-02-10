@@ -19,7 +19,7 @@
 
   var CANVAS_WIDTH = 1080;
   var CANVAS_HEIGHT = 1920;
-  var SITE_URL = "moony01.github.io/sanggyeonrye-test";
+  var SITE_URL = "moony01.com/sanggyeonrye-test";
 
   // 상견례 테스트 결과 타입 (FREEPASS/MOONJEON)
   var RESULT_TYPE_COLORS = {
