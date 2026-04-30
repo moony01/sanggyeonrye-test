@@ -4,7 +4,9 @@ _site
 .jekyll-metadata
 vendor
 .agent
+CLAUDE.md
 .claude/
+runtime/
 .playwright-mcp/
 
 # Windows reserved names (prevent accidental creation)
